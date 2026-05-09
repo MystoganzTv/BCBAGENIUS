@@ -4,14 +4,15 @@ import 'react-native-url-polyfill/auto';
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!;
+const isServer = typeof window === 'undefined';
 const wsTransport =
-  typeof window === 'undefined' ? require('ws') : undefined;
+  isServer ? require('ws') : undefined;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: AsyncStorage,
+    storage: isServer ? undefined : AsyncStorage,
     autoRefreshToken: true,
-    persistSession: true,
+    persistSession: !isServer,
     detectSessionInUrl: false,
   },
   realtime: {

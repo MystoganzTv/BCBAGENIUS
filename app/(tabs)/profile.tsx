@@ -8,23 +8,20 @@ import { Card } from '@/components/ui/Card';
 import { Colors } from '@/constants/colors';
 import { BorderRadius, FontSize, FontWeight, Spacing } from '@/constants/layout';
 import { useAuth } from '@/hooks/useAuth';
-import { CertType } from '@/lib/types';
 
 export default function ProfileScreen() {
   const { profile, signOut, updateProfile } = useAuth();
   const [editing, setEditing]       = useState(false);
   const [fullName, setFullName]     = useState(profile?.fullName ?? '');
-  const [certTarget, setCertTarget] = useState<CertType>(profile?.certTarget ?? 'BCBA');
   const [saving, setSaving]         = useState(false);
 
   useEffect(() => {
     setFullName(profile?.fullName ?? '');
-    setCertTarget(profile?.certTarget ?? 'BCBA');
-  }, [profile?.fullName, profile?.certTarget]);
+  }, [profile?.fullName]);
 
   const handleSave = async () => {
     setSaving(true);
-    const { error } = await updateProfile({ fullName, certTarget });
+    const { error } = await updateProfile({ fullName, certTarget: 'BCBA' });
     setSaving(false);
     if (error) {
       Alert.alert('Error', error);
@@ -74,16 +71,9 @@ export default function ProfileScreen() {
               </View>
               <View style={styles.field}>
                 <Text style={styles.label}>Certificación objetivo</Text>
-                <View style={styles.certSelector}>
-                  {(['BCBA', 'BCaBA'] as CertType[]).map((c) => (
-                    <TouchableOpacity
-                      key={c}
-                      style={[styles.certOption, certTarget === c && styles.certOptionActive]}
-                      onPress={() => setCertTarget(c)}
-                    >
-                      <Text style={[styles.certText, certTarget === c && styles.certTextActive]}>{c}</Text>
-                    </TouchableOpacity>
-                  ))}
+                <View style={styles.fixedCertCard}>
+                  <Text style={styles.fixedCertLabel}>BCBA</Text>
+                  <Text style={styles.fixedCertSub}>La experiencia completa esta enfocada en BCBA.</Text>
                 </View>
               </View>
               <View style={styles.editActions}>
@@ -136,11 +126,9 @@ const styles = StyleSheet.create({
   field:             { width: '100%', marginBottom: Spacing.sm },
   label:             { fontSize: FontSize.sm, fontWeight: FontWeight.medium, color: Colors.textSecondary, marginBottom: Spacing.xs },
   input:             { height: 46, borderWidth: 1.5, borderColor: Colors.border, borderRadius: BorderRadius.md, paddingHorizontal: Spacing.md, fontSize: FontSize.md, color: Colors.textPrimary, backgroundColor: Colors.surfaceAlt, width: '100%' },
-  certSelector:      { flexDirection: 'row', gap: Spacing.sm },
-  certOption:        { flex: 1, height: 42, borderRadius: BorderRadius.md, borderWidth: 1.5, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.surfaceAlt },
-  certOptionActive:  { borderColor: Colors.primary, backgroundColor: '#EEF2FF' },
-  certText:          { fontWeight: FontWeight.medium, color: Colors.textSecondary },
-  certTextActive:    { color: Colors.primary, fontWeight: FontWeight.bold },
+  fixedCertCard:     { borderRadius: BorderRadius.md, borderWidth: 1.5, borderColor: Colors.primary, backgroundColor: '#EEF2FF', padding: Spacing.md, gap: 4 },
+  fixedCertLabel:    { fontWeight: FontWeight.bold, color: Colors.primary, fontSize: FontSize.md },
+  fixedCertSub:      { color: Colors.textSecondary, fontSize: FontSize.sm },
   editActions:       { flexDirection: 'row', gap: Spacing.sm, width: '100%' },
   optionsCard:       { gap: 0 },
   optionRow:         { flexDirection: 'row', alignItems: 'center', gap: Spacing.md, paddingVertical: Spacing.md, borderBottomWidth: 1, borderBottomColor: Colors.divider },

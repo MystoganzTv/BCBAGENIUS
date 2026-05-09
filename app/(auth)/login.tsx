@@ -53,7 +53,7 @@ export default function LoginScreen() {
               <Text style={styles.logoText}>BCBA</Text>
               <Text style={styles.logoAccent}>Genius</Text>
             </View>
-            <Text style={styles.subtitle}>Tu camino al BCBA & BCaBA</Text>
+            <Text style={styles.subtitle}>Tu camino al examen BCBA</Text>
           </View>
 
           {/* Formulario */}

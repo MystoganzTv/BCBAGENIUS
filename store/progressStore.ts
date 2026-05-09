@@ -159,13 +159,17 @@ export const useProgressStore = create<ProgressStore>((set, get) => ({
         domainMap[s.domain].total   += s.questionsAttempted;
       }
       for (const [domain, scores] of Object.entries(domainMap)) {
-        await supabase.rpc('increment_domain_progress', {
-          p_user_id:  userId,
-          p_cert_type: unsyncedSessions[0]?.certType ?? 'BCBA',
-          p_domain:   domain,
-          p_correct:  scores.correct,
-          p_total:    scores.total,
-        }).then(() => null).catch(() => null); // graceful fail si no existe la función
+        try {
+          await supabase.rpc('increment_domain_progress', {
+            p_user_id:  userId,
+            p_cert_type: unsyncedSessions[0]?.certType ?? 'BCBA',
+            p_domain:   domain,
+            p_correct:  scores.correct,
+            p_total:    scores.total,
+          });
+        } catch {
+          // graceful fail si no existe la función RPC
+        }
       }
 
       set({ pendingSync: false });

@@ -8,17 +8,15 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Colors } from '@/constants/colors';
 import { BorderRadius, FontSize, FontWeight, Spacing } from '@/constants/layout';
 import { getRandomFlashcards } from '@/data/flashcards';
-import { useAuth } from '@/hooks/useAuth';
-import { CertType, Flashcard } from '@/lib/types';
+import { Flashcard } from '@/lib/types';
 import { useProgressStore } from '@/store/progressStore';
 
 type DeckState = 'setup' | 'studying' | 'complete';
 
 export default function FlashcardsScreen() {
-  const { profile } = useAuth();
   const addSession = useProgressStore((state) => state.addSession);
   const [deckState, setDeckState]   = useState<DeckState>('setup');
-  const [certType, setCertType]     = useState<CertType>(profile?.certTarget ?? 'BCBA');
+  const certType = 'BCBA' as const;
   const [deck, setDeck]             = useState<Flashcard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [known, setKnown]           = useState(0);
@@ -27,7 +25,7 @@ export default function FlashcardsScreen() {
   const [sessionSaved, setSessionSaved] = useState(false);
 
   const startDeck = (count: number) => {
-    const cards = getRandomFlashcards(count, certType);
+    const cards = getRandomFlashcards(count, 'BCBA');
     setDeck(cards);
     setCurrentIndex(0);
     setKnown(0);
@@ -99,16 +97,9 @@ export default function FlashcardsScreen() {
 
           <Card style={styles.section}>
             <Text style={styles.sectionTitle}>Certificación</Text>
-            <View style={styles.certSelector}>
-              {(['BCBA', 'BCaBA'] as CertType[]).map((c) => (
-                <TouchableOpacity
-                  key={c}
-                  style={[styles.certOption, certType === c && styles.certOptionActive]}
-                  onPress={() => setCertType(c)}
-                >
-                  <Text style={[styles.certText, certType === c && styles.certTextActive]}>{c}</Text>
-                </TouchableOpacity>
-              ))}
+            <View style={styles.fixedCertCard}>
+              <Text style={styles.fixedCertLabel}>BCBA</Text>
+              <Text style={styles.fixedCertSub}>Solo conceptos y terminos del recorrido BCBA.</Text>
             </View>
           </Card>
 
@@ -190,11 +181,9 @@ const styles = StyleSheet.create({
   screenSubtitle:    { fontSize: FontSize.md, color: Colors.textSecondary },
   section:           {},
   sectionTitle:      { fontSize: FontSize.md, fontWeight: FontWeight.semibold, color: Colors.textPrimary, marginBottom: Spacing.md },
-  certSelector:      { flexDirection: 'row', gap: Spacing.sm },
-  certOption:        { flex: 1, height: 44, borderRadius: BorderRadius.md, borderWidth: 1.5, borderColor: Colors.border, alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.surfaceAlt },
-  certOptionActive:  { borderColor: Colors.primary, backgroundColor: '#EEF2FF' },
-  certText:          { fontWeight: FontWeight.medium, color: Colors.textSecondary },
-  certTextActive:    { color: Colors.primary, fontWeight: FontWeight.bold },
+  fixedCertCard:     { borderRadius: BorderRadius.md, borderWidth: 1.5, borderColor: Colors.primary, backgroundColor: '#EEF2FF', padding: Spacing.md, gap: 4 },
+  fixedCertLabel:    { fontWeight: FontWeight.bold, color: Colors.primary, fontSize: FontSize.lg },
+  fixedCertSub:      { color: Colors.textSecondary, fontSize: FontSize.sm },
   deckGrid:          { flexDirection: 'row', gap: Spacing.sm },
   deckOption:        { flex: 1, backgroundColor: Colors.surfaceAlt, borderRadius: BorderRadius.md, padding: Spacing.md, alignItems: 'center', gap: 2 },
   deckCount:         { fontSize: FontSize.xxl, fontWeight: FontWeight.bold, color: Colors.primary },

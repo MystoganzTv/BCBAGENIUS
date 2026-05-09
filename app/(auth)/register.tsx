@@ -17,13 +17,11 @@ import { Card } from '@/components/ui/Card';
 import { Colors } from '@/constants/colors';
 import { BorderRadius, FontSize, FontWeight, Spacing } from '@/constants/layout';
 import { useAuth } from '@/hooks/useAuth';
-import { CertType } from '@/lib/types';
 
 export default function RegisterScreen() {
   const [fullName, setFullName]   = useState('');
   const [email, setEmail]         = useState('');
   const [password, setPassword]   = useState('');
-  const [certTarget, setCertTarget] = useState<CertType>('BCBA');
   const [loading, setLoading]     = useState(false);
   const { signUp } = useAuth();
 
@@ -104,24 +102,13 @@ export default function RegisterScreen() {
               />
             </View>
 
-            {/* Selector de certificación */}
             <View style={styles.field}>
-              <Text style={styles.label}>¿Qué certificación buscas?</Text>
-              <View style={styles.certSelector}>
-                {(['BCBA', 'BCaBA'] as CertType[]).map((cert) => (
-                  <TouchableOpacity
-                    key={cert}
-                    style={[styles.certOption, certTarget === cert && styles.certOptionActive]}
-                    onPress={() => setCertTarget(cert)}
-                  >
-                    <Text style={[styles.certText, certTarget === cert && styles.certTextActive]}>
-                      {cert}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+              <Text style={styles.label}>Ruta de estudio</Text>
+              <View style={styles.fixedTrack}>
+                <Text style={styles.fixedTrackText}>BCBA</Text>
               </View>
               <Text style={styles.helperText}>
-                Puedes cambiar esta meta luego desde tu perfil.
+                Esta app ahora esta enfocada exclusivamente en preparacion BCBA.
               </Text>
             </View>
 
@@ -170,20 +157,16 @@ const styles = StyleSheet.create({
     color: Colors.textPrimary,
     backgroundColor: Colors.surfaceAlt,
   },
-  certSelector:    { flexDirection: 'row', gap: Spacing.sm },
-  certOption:      {
-    flex: 1,
+  fixedTrack:       {
     height: 44,
     borderRadius: BorderRadius.md,
     borderWidth: 1.5,
-    borderColor: Colors.border,
+    borderColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.surfaceAlt,
+    backgroundColor: '#EEF2FF',
   },
-  certOptionActive: { borderColor: Colors.primary, backgroundColor: '#EEF2FF' },
-  certText:         { fontSize: FontSize.md, fontWeight: FontWeight.medium, color: Colors.textSecondary },
-  certTextActive:   { color: Colors.primary, fontWeight: FontWeight.bold },
+  fixedTrackText:   { fontSize: FontSize.md, fontWeight: FontWeight.bold, color: Colors.primary },
   helperText:       { marginTop: Spacing.xs, fontSize: FontSize.xs, color: Colors.textTertiary },
   button:           { marginTop: Spacing.md },
   footer:           { flexDirection: 'row', justifyContent: 'center', marginTop: Spacing.lg },

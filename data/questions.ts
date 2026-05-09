@@ -2,8 +2,8 @@ import { QuizQuestion } from '@/lib/types';
 
 // ═══════════════════════════════════════════════════════════════════════════
 //  BCBA Genius — Banco de preguntas
-//  BACB Task List 6th Edition · BCBA & BCaBA
-//  ~65 preguntas cubriendo los 7 dominios
+//  BACB Task List 6th Edition · BCBA only
+//  65 preguntas cubriendo los 7 dominios
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const ALL_QUESTIONS: QuizQuestion[] = [
@@ -103,30 +103,30 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'easy',
   },
   {
-    id: 'q-A-008', certType: 'BCaBA', domain: 'Foundations', taskCode: 'A-01',
-    question: 'The three-term contingency (ABC) consists of:',
+    id: 'q-A-008', certType: 'BCBA', domain: 'Foundations', taskCode: 'A-08',
+    question: 'Selectionism in behavior analysis refers to the idea that:',
     options: [
-      'Antecedent, Behavior, Consequence.',
-      'Assessment, Behavior, Condition.',
-      'Antecedent, Baseline, Control.',
-      'Attention, Behavior, Communication.',
+      'Behavior is explained only by immediate antecedents.',
+      'Consequences select behavior across phylogenic, ontogenic, and cultural levels.',
+      'Private events are excluded from scientific analysis.',
+      'Behavior can only be understood through statistical group comparisons.',
     ],
-    correctIndex: 0,
-    explanation: 'The three-term contingency describes the relationship between the discriminative stimulus (antecedent), the operant response (behavior), and the reinforcing or punishing consequence. It is the basic unit of operant analysis.',
-    difficulty: 'easy',
+    correctIndex: 1,
+    explanation: 'Selectionism is a core assumption of behavior analysis. It holds that behavior is selected by its consequences, just as traits are selected in evolution and practices are selected at a cultural level.',
+    difficulty: 'medium',
   },
   {
-    id: 'q-A-009', certType: 'BCaBA', domain: 'Foundations', taskCode: 'A-02',
-    question: 'Which philosopher\'s work is most closely associated with the philosophical roots of behaviorism?',
+    id: 'q-A-009', certType: 'BCBA', domain: 'Foundations', taskCode: 'A-09',
+    question: 'Which statement BEST illustrates the distinction between a respondent and an operant response?',
     options: [
-      'René Descartes.',
-      'Aristotle.',
-      'John Locke and British Empiricism.',
-      'Plato.',
+      'A dog salivating to food is maintained by consequences, whereas a child requesting water is elicited by an antecedent stimulus.',
+      'A student studying to earn praise is elicited by a stimulus, whereas blinking to an air puff is selected by consequences.',
+      'A knee-jerk reflex is elicited by antecedent stimulation, whereas hand-raising in class is shaped and maintained by its consequences.',
+      'Both respondent and operant responses are primarily defined by verbal report.',
     ],
     correctIndex: 2,
-    explanation: 'Behaviorism\'s philosophical roots include British Empiricism (Locke, Hume) which held that the mind is a blank slate shaped by experience, and Charles Darwin\'s evolutionary theory which linked human and animal behavior.',
-    difficulty: 'hard',
+    explanation: 'Respondent behavior is elicited by antecedent stimuli, as in reflexes. Operant behavior is emitted and selected by its consequences, such as socially reinforced classroom responding.',
+    difficulty: 'medium',
   },
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -201,24 +201,29 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'easy',
   },
   {
-    id: 'q-B-007', certType: 'BCaBA', domain: 'Measurement', taskCode: 'B-01',
-    question: 'Latency recording measures:',
+    id: 'q-B-007', certType: 'BCBA', domain: 'Measurement', taskCode: 'B-07',
+    question: 'Which measurement system is MOST appropriate when you need to know how quickly a learner begins a response after an instruction?',
     options: [
-      'How long a behavior lasts from onset to offset.',
-      'The time between the end of one response and the beginning of the next.',
-      'The elapsed time between an antecedent stimulus and the beginning of the behavior.',
-      'The number of correct responses per minute.',
+      'Duration recording.',
+      'Latency recording.',
+      'Whole interval recording.',
+      'Permanent product recording.',
     ],
-    correctIndex: 2,
-    explanation: 'Latency measures the time from the presentation of an antecedent (e.g., an instruction) to the onset of the behavior. It is useful when the speed of responding to a cue is the target (e.g., compliance time).',
+    correctIndex: 1,
+    explanation: 'Latency recording measures the elapsed time between a defined antecedent event and the onset of the behavior. It is especially useful for compliance, response initiation, and prompt delay decisions.',
     difficulty: 'easy',
   },
   {
-    id: 'q-B-008', certType: 'BCaBA', domain: 'Measurement', taskCode: 'B-02',
-    question: 'Partial interval recording tends to _______ the true frequency of behavior.',
-    options: ['Underestimate.', 'Accurately represent.', 'Overestimate.', 'Have no systematic bias on.'],
-    correctIndex: 2,
-    explanation: 'Partial interval recording scores an interval as "behavior occurred" if the behavior happens at any point during the interval, even briefly. This tends to overestimate true frequency compared to continuous measurement.',
+    id: 'q-B-008', certType: 'BCBA', domain: 'Measurement', taskCode: 'B-08',
+    question: 'A behavior analyst selects whole interval recording to measure on-task behavior. The analyst should remember that this method tends to:',
+    options: [
+      'Overestimate the occurrence of the target behavior.',
+      'Underestimate the occurrence of the target behavior.',
+      'Produce the same estimate as event recording.',
+      'Be appropriate only for permanent products.',
+    ],
+    correctIndex: 1,
+    explanation: 'Whole interval recording scores the behavior only if it occurs for the entire interval, so it tends to underestimate the true amount of behavior. That bias is often acceptable when the target is a behavior expected to occur continuously, such as on-task engagement.',
     difficulty: 'medium',
   },
 
@@ -291,7 +296,7 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'medium',
   },
   {
-    id: 'q-C-006', certType: 'BCaBA', domain: 'Experimental Design', taskCode: 'C-01',
+    id: 'q-C-006', certType: 'BCBA', domain: 'Experimental Design', taskCode: 'C-06',
     question: 'Visual analysis of single-subject data considers all of the following EXCEPT:',
     options: ['Level.', 'Trend.', 'Variability.', 'Statistical significance.'],
     correctIndex: 3,
@@ -299,16 +304,16 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'medium',
   },
   {
-    id: 'q-C-007', certType: 'BCaBA', domain: 'Experimental Design', taskCode: 'C-02',
-    question: 'A "functional relationship" between a treatment and a behavior change means:',
+    id: 'q-C-007', certType: 'BCBA', domain: 'Experimental Design', taskCode: 'C-07',
+    question: 'A changing criterion design is MOST appropriate when the target behavior:',
     options: [
-      'The treatment is socially acceptable.',
-      'Changes in the dependent variable are caused by manipulation of the independent variable.',
-      'The behavior changed significantly compared to a control group.',
-      'The treatment was implemented with high fidelity.',
+      'Must be compared rapidly across two treatments.',
+      'Cannot be reversed and must be increased or decreased in a stepwise fashion.',
+      'Occurs too infrequently for repeated measurement.',
+      'Is maintained automatically and requires sensory extinction.',
     ],
     correctIndex: 1,
-    explanation: 'A functional relationship means that the independent variable (treatment) is the cause of changes in the dependent variable (behavior), as demonstrated through experimental control in a single-subject design.',
+    explanation: 'Changing criterion designs are ideal when the goal is gradual, stepwise change in a behavior such as reducing cigarettes smoked per day or increasing completed tasks. Experimental control is shown when behavior changes to match each new criterion level.',
     difficulty: 'medium',
   },
 
@@ -502,7 +507,7 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'easy',
   },
   {
-    id: 'q-E-011', certType: 'BCaBA', domain: 'Behavior Change', taskCode: 'E-01',
+    id: 'q-E-011', certType: 'BCBA', domain: 'Behavior Change', taskCode: 'E-11',
     question: 'Response cost is a form of:',
     options: ['Positive reinforcement.', 'Negative reinforcement.', 'Positive punishment.', 'Negative punishment.'],
     correctIndex: 3,
@@ -510,7 +515,7 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'medium',
   },
   {
-    id: 'q-E-012', certType: 'BCaBA', domain: 'Behavior Change', taskCode: 'E-02',
+    id: 'q-E-012', certType: 'BCBA', domain: 'Behavior Change', taskCode: 'E-12',
     question: 'Time-out from positive reinforcement is effective ONLY when:',
     options: [
       'Used with adult clients who understand the contingency.',
@@ -605,20 +610,20 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'hard',
   },
   {
-    id: 'q-F-007', certType: 'BCaBA', domain: 'Ethics', taskCode: 'F-01',
-    question: 'Which of the following is NOT an obligation of a BCaBA under the BACB Ethics Code?',
+    id: 'q-F-007', certType: 'BCBA', domain: 'Ethics', taskCode: 'F-07',
+    question: 'Which action BEST reflects the ethical principle of protecting confidentiality in everyday practice?',
     options: [
-      'Practicing under the supervision of a BCBA.',
-      'Maintaining client confidentiality.',
-      'Independently designing behavior analytic programs without supervision.',
-      'Following the least restrictive alternative principle.',
+      'Discussing a case in a restaurant as long as the client\'s first name is omitted.',
+      'Sharing full session videos with another clinic because the client could benefit from a second opinion.',
+      'Limiting access to identifying information and discussing client details only with authorized people for service-related purposes.',
+      'Using client examples in staff training because internal meetings are automatically confidential.',
     ],
     correctIndex: 2,
-    explanation: 'BCaBAs are prohibited from practicing independently. All behavior analytic programs must be designed, directed, and regularly reviewed by a supervising BCBA or BCBA-D. Independent design is outside the scope of BCaBA certification.',
+    explanation: 'Confidentiality requires behavior analysts to limit access to protected information, share only what is necessary, and disclose information only to authorized individuals for clinically appropriate reasons. Omitting a first name alone is not enough if the client remains identifiable.',
     difficulty: 'easy',
   },
   {
-    id: 'q-F-008', certType: 'BCaBA', domain: 'Ethics', taskCode: 'F-02',
+    id: 'q-F-008', certType: 'BCBA', domain: 'Ethics', taskCode: 'F-08',
     question: 'Social validity assessment involves:',
     options: [
       'Measuring a behavior using direct observation across social contexts.',
@@ -713,17 +718,30 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'medium',
   },
   {
-    id: 'q-G-007', certType: 'BCaBA', domain: 'Personnel Supervision', taskCode: 'G-01',
-    question: 'BCaBAs may supervise:',
+    id: 'q-G-007', certType: 'BCBA', domain: 'Personnel Supervision', taskCode: 'G-07',
+    question: 'A competency-based supervision model requires the supervisor to:',
     options: [
-      'Other BCaBAs who are working toward BCBA certification.',
-      'Registered Behavior Technicians (RBTs) under specific circumstances.',
-      'Board Certified Behavior Analysts.',
-      'BCaBAs may not supervise anyone under BACB guidelines.',
+      'Rely primarily on supervisee self-report to judge skill development.',
+      'Provide direct observation, behavior-specific feedback, rehearsal, and performance-based evaluation of target skills.',
+      'Focus on case discussion rather than observable performance to preserve rapport.',
+      'Avoid formal evaluation until the final supervision meeting.',
     ],
     correctIndex: 1,
-    explanation: 'BCaBAs may provide behavior technician supervision (RBT-level oversight) under the supervision of a BCBA, according to BACB guidelines. They may not provide BCBA-level supervision or direct the work of other certificants.',
+    explanation: 'Competency-based supervision is anchored in observable repertoires, direct observation, rehearsal, feedback, and documented performance criteria. It is not sufficient to rely on discussion alone or delayed end-point evaluation.',
     difficulty: 'hard',
+  },
+  {
+    id: 'q-G-008', certType: 'BCBA', domain: 'Personnel Supervision', taskCode: 'G-08',
+    question: 'When training staff to implement a prompting procedure, which sequence BEST reflects Behavior Skills Training (BST)?',
+    options: [
+      'Rehearsal, feedback, instruction, modeling.',
+      'Instruction, modeling, rehearsal, feedback.',
+      'Modeling, punishment, rehearsal, self-monitoring.',
+      'Instruction, observation, written test, feedback.',
+    ],
+    correctIndex: 1,
+    explanation: 'BST consists of giving clear instructions, modeling the skill, allowing the trainee to rehearse it, and then providing behavior-specific feedback. This sequence is one of the most established approaches for staff training in ABA.',
+    difficulty: 'easy',
   },
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -769,7 +787,7 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'medium',
   },
   {
-    id: 'q-AP-004', certType: 'BCaBA', domain: 'Applications', taskCode: 'AP-01',
+    id: 'q-AP-004', certType: 'BCBA', domain: 'Applications', taskCode: 'AP-04',
     question: 'Discrete Trial Training (DTT) is characterized by:',
     options: [
       'Teaching in natural environments using the child\'s natural motivation.',
@@ -782,7 +800,7 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     difficulty: 'easy',
   },
   {
-    id: 'q-AP-005', certType: 'BCaBA', domain: 'Applications', taskCode: 'AP-02',
+    id: 'q-AP-005', certType: 'BCBA', domain: 'Applications', taskCode: 'AP-05',
     question: 'Natural Environment Teaching (NET) differs from DTT primarily in that NET:',
     options: [
       'Does not use reinforcement.',
@@ -794,27 +812,83 @@ export const ALL_QUESTIONS: QuizQuestion[] = [
     explanation: 'NET follows the learner\'s motivation and interest, embedding teaching trials into ongoing activities in natural environments. It promotes generalization by using natural reinforcers and varied contexts from the start, unlike the structured format of DTT.',
     difficulty: 'easy',
   },
+  {
+    id: 'q-AP-006', certType: 'BCBA', domain: 'Applications', taskCode: 'AP-06',
+    question: 'A listener responds correctly when told, "Touch the spoon," but cannot say "spoon" when shown the item. This pattern suggests the learner has:',
+    options: [
+      'Generalized imitation but not listener discrimination.',
+      'A tact repertoire without listener responding.',
+      'Listener responding without the corresponding tact.',
+      'Textual behavior without echoic behavior.',
+    ],
+    correctIndex: 2,
+    explanation: 'Listener responding and tacting are separate verbal operants. A learner may follow spoken directions involving an item without yet being able to label that item independently as a tact.',
+    difficulty: 'medium',
+  },
+  {
+    id: 'q-AP-007', certType: 'BCBA', domain: 'Applications', taskCode: 'AP-07',
+    question: 'Which strategy BEST promotes maintenance after a new skill has been mastered in instruction?',
+    options: [
+      'Ending reinforcement immediately so the learner contacts natural contingencies.',
+      'Scheduling follow-up opportunities, thinning prompts, and ensuring the skill contacts reinforcement over time.',
+      'Restricting practice to the teaching table to prevent response variability.',
+      'Switching to only written tests of the skill.',
+    ],
+    correctIndex: 1,
+    explanation: 'Maintenance is strengthened when the learner continues to contact relevant contingencies after formal teaching. Planned review, prompt fading, and natural reinforcement opportunities help the response persist over time.',
+    difficulty: 'medium',
+  },
+  {
+    id: 'q-AP-008', certType: 'BCBA', domain: 'Applications', taskCode: 'AP-08',
+    question: 'Which example BEST illustrates programming common stimuli to promote generalization?',
+    options: [
+      'Using the same materials, cues, and relevant features that will be present in the natural environment.',
+      'Teaching a skill only with one therapist until 100% mastery is achieved.',
+      'Removing all naturally occurring distractors during instruction permanently.',
+      'Waiting to see if generalization occurs before making any programming decisions.',
+    ],
+    correctIndex: 0,
+    explanation: 'Programming common stimuli means arranging instructional conditions so that important stimuli from the natural performance setting are present during teaching. This improves the likelihood that the skill will transfer outside training.',
+    difficulty: 'medium',
+  },
+  {
+    id: 'q-AP-009', certType: 'BCBA', domain: 'Applications', taskCode: 'AP-09',
+    question: 'A behavior analyst teaches a learner to request "break" instead of engaging in aggression maintained by escape. This is BEST described as:',
+    options: [
+      'Teaching an intraverbal maintained by generalized reinforcement.',
+      'Functional communication training using a response that matches the problem behavior\'s function.',
+      'Respondent extinction paired with overcorrection.',
+      'A token economy with delayed backup reinforcement.',
+    ],
+    correctIndex: 1,
+    explanation: 'Functional communication training replaces problem behavior with a socially appropriate communicative response that accesses the same reinforcer. In this example, the break request serves the same escape function as the aggression previously did.',
+    difficulty: 'easy',
+  },
 ];
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
+function normalizeCertType(_certType?: 'BCBA' | 'BCaBA') {
+  return 'BCBA' as const;
+}
+
 export function getQuestionsByCert(certType: 'BCBA' | 'BCaBA') {
-  return ALL_QUESTIONS.filter((q) => q.certType === certType);
+  return ALL_QUESTIONS.filter((q) => q.certType === normalizeCertType(certType));
 }
 
 export function getQuestionsByDomain(domain: string, certType?: 'BCBA' | 'BCaBA') {
   return ALL_QUESTIONS.filter(
-    (q) => q.domain === domain && (certType ? q.certType === certType : true)
+    (q) => q.domain === domain && q.certType === normalizeCertType(certType)
   );
 }
 
 export function getQuestionsByDifficulty(difficulty: 'easy' | 'medium' | 'hard', certType?: 'BCBA' | 'BCaBA') {
   return ALL_QUESTIONS.filter(
-    (q) => q.difficulty === difficulty && (certType ? q.certType === certType : true)
+    (q) => q.difficulty === difficulty && q.certType === normalizeCertType(certType)
   );
 }
 
 export function getRandomQuestions(count: number, certType?: 'BCBA' | 'BCaBA', domain?: string) {
-  let pool = certType ? getQuestionsByCert(certType) : ALL_QUESTIONS;
+  let pool = getQuestionsByCert(certType ?? 'BCBA');
   if (domain) pool = pool.filter((q) => q.domain === domain);
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, Math.min(count, shuffled.length));
@@ -828,6 +902,6 @@ export function getDomains(): string[] {
 export const QUESTION_STATS = {
   total:   ALL_QUESTIONS.length,
   bcba:    ALL_QUESTIONS.filter(q => q.certType === 'BCBA').length,
-  bcaba:   ALL_QUESTIONS.filter(q => q.certType === 'BCaBA').length,
+  bcaba:   0,
   domains: getDomains(),
 };
