@@ -1,5 +1,5 @@
 -- ═══════════════════════════════════════════════════════════
---  ABAGenius — Schema SQL para Supabase
+--  BCBA Genius — Schema SQL para Supabase
 --  Ejecutar en: Supabase Dashboard → SQL Editor
 -- ═══════════════════════════════════════════════════════════
 

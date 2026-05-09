@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
-import { useAuth } from './useAuth';
+import { useProgressStore } from '@/store/progressStore';
 
 export interface ProgressStats {
   totalSessions: number;
@@ -27,7 +26,11 @@ export interface ProgressStats {
 }
 
 export function useProgress(): ProgressStats {
-  const { user } = useAuth();
+  const sessions = useProgressStore((state) => state.sessions);
+  const currentStreak = useProgressStore((state) => state.currentStreak);
+  const longestStreak = useProgressStore((state) => state.longestStreak);
+  const loadLocal = useProgressStore((state) => state.loadLocal);
+  const getStats = useProgressStore((state) => state.getStats);
   const [stats, setStats] = useState<ProgressStats>({
     totalSessions:  0,
     totalCorrect:   0,
@@ -41,65 +44,37 @@ export function useProgress(): ProgressStats {
   });
 
   useEffect(() => {
-    if (!user) {
-      setStats((s) => ({ ...s, loading: false }));
-      return;
-    }
-    loadStats();
-  }, [user]);
+    loadLocal();
+  }, [loadLocal]);
 
-  const loadStats = async () => {
-    if (!user) return;
-
-    const [sessionsRes, domainRes, streakRes] = await Promise.all([
-      supabase
-        .from('study_sessions')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('completed_at', { ascending: false })
-        .limit(50),
-      supabase
-        .from('domain_progress')
-        .select('*')
-        .eq('user_id', user.id),
-      supabase
-        .from('streaks')
-        .select('*')
-        .eq('user_id', user.id)
-        .single(),
-    ]);
-
-    const sessions = sessionsRes.data ?? [];
-    const domains  = domainRes.data ?? [];
-    const streak   = streakRes.data;
-
-    const totalCorrect   = sessions.reduce((sum, s) => sum + (s.correct_answers ?? 0), 0);
-    const totalAttempted = sessions.reduce((sum, s) => sum + (s.questions_attempted ?? 0), 0);
+  useEffect(() => {
+    const localStats = getStats();
+    const domainScores = Object.entries(localStats.byDomain).map(([domain, score]) => ({
+      domain,
+      correct: score.correct,
+      total: score.total,
+      percentage: score.pct,
+    }));
 
     setStats({
-      totalSessions:  sessions.length,
-      totalCorrect,
-      totalAttempted,
-      overallAccuracy: totalAttempted > 0 ? totalCorrect / totalAttempted : 0,
-      currentStreak:  streak?.current_streak ?? 0,
-      longestStreak:  streak?.longest_streak ?? 0,
-      domainScores: domains.map((d) => ({
-        domain:     d.domain,
-        correct:    d.correct,
-        total:      d.total,
-        percentage: d.total > 0 ? d.correct / d.total : 0,
-      })),
-      recentSessions: sessions.slice(0, 5).map((s) => ({
-        id:                  s.id,
-        sessionType:         s.session_type,
-        certType:            s.cert_type,
-        correctAnswers:      s.correct_answers,
-        questionsAttempted:  s.questions_attempted,
-        completedAt:         s.completed_at,
+      totalSessions: localStats.totalSessions,
+      totalCorrect: localStats.totalCorrect,
+      totalAttempted: localStats.totalAttempted,
+      overallAccuracy: localStats.overallAccuracy,
+      currentStreak,
+      longestStreak,
+      domainScores,
+      recentSessions: localStats.recentSessions.map((session) => ({
+        id: session.id,
+        sessionType: session.sessionType,
+        certType: session.certType,
+        correctAnswers: session.correctAnswers,
+        questionsAttempted: session.questionsAttempted,
+        completedAt: session.completedAt,
       })),
       loading: false,
     });
-  };
+  }, [sessions, currentStreak, longestStreak, loadLocal, getStats]);
 
   return stats;
 }

@@ -59,7 +59,7 @@ export default function RegisterScreen() {
       >
         <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
           <View style={styles.header}>
-            <Text style={styles.logoText}>ABA<Text style={styles.logoAccent}>Genius</Text></Text>
+            <Text style={styles.logoText}>BCBA<Text style={styles.logoAccent}> Genius</Text></Text>
             <Text style={styles.subtitle}>Crea tu cuenta gratuita</Text>
           </View>
 
@@ -120,6 +120,9 @@ export default function RegisterScreen() {
                   </TouchableOpacity>
                 ))}
               </View>
+              <Text style={styles.helperText}>
+                Puedes cambiar esta meta luego desde tu perfil.
+              </Text>
             </View>
 
             <Button
@@ -181,6 +184,7 @@ const styles = StyleSheet.create({
   certOptionActive: { borderColor: Colors.primary, backgroundColor: '#EEF2FF' },
   certText:         { fontSize: FontSize.md, fontWeight: FontWeight.medium, color: Colors.textSecondary },
   certTextActive:   { color: Colors.primary, fontWeight: FontWeight.bold },
+  helperText:       { marginTop: Spacing.xs, fontSize: FontSize.xs, color: Colors.textTertiary },
   button:           { marginTop: Spacing.md },
   footer:           { flexDirection: 'row', justifyContent: 'center', marginTop: Spacing.lg },
   footerText:       { color: Colors.textSecondary, fontSize: FontSize.sm },

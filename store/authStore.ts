@@ -3,6 +3,8 @@ import { create } from 'zustand';
 import { supabase } from '@/lib/supabase';
 import { UserProfile } from '@/lib/types';
 
+let authSubscription: { unsubscribe: () => void } | null = null;
+
 interface AuthStore {
   user:    User | null;
   session: Session | null;
@@ -39,8 +41,11 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       set({ user: null, session: null, profile: null, loading: false });
     }
 
+    // Evita acumular listeners si esta accion se invoca mas de una vez.
+    authSubscription?.unsubscribe();
+
     // Escuchar cambios de sesión en tiempo real
-    supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         const { data: profile } = await supabase
           .from('profiles')
@@ -52,6 +57,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
         set({ user: null, session: null, profile: null });
       }
     });
+
+    authSubscription = data.subscription;
   },
 
   signIn: async (email, password) => {

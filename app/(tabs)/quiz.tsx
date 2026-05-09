@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,23 +19,29 @@ import { BorderRadius, FontSize, FontWeight, Spacing } from '@/constants/layout'
 import { getRandomQuestions } from '@/data/questions';
 import { useAuth } from '@/hooks/useAuth';
 import { CertType, QuizQuestion } from '@/lib/types';
+import { useProgressStore } from '@/store/progressStore';
 
 type QuizState = 'setup' | 'active' | 'results';
 
 export default function QuizScreen() {
   const { profile } = useAuth();
+  const addSession = useProgressStore((state) => state.addSession);
   const [quizState, setQuizState]     = useState<QuizState>('setup');
   const [certType, setCertType]       = useState<CertType>(profile?.certTarget ?? 'BCBA');
   const [questions, setQuestions]     = useState<QuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers]         = useState<boolean[]>([]);
   const [questionCount, setQuestionCount] = useState(10);
+  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [sessionSaved, setSessionSaved] = useState(false);
 
   const startQuiz = () => {
     const qs = getRandomQuestions(questionCount, certType);
     setQuestions(qs);
     setCurrentIndex(0);
     setAnswers([]);
+    setSessionSaved(false);
+    setStartedAt(Date.now());
     setQuizState('active');
   };
 
@@ -52,6 +59,48 @@ export default function QuizScreen() {
 
   const correctCount = answers.filter(Boolean).length;
   const score = questions.length > 0 ? correctCount / questions.length : 0;
+  const dominantDomain = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const question of questions) {
+      counts[question.domain] = (counts[question.domain] ?? 0) + 1;
+    }
+
+    return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  }, [questions]);
+
+  const persistQuizSession = async () => {
+    if (sessionSaved || questions.length === 0) return;
+
+    try {
+      await addSession({
+        sessionType: 'quiz',
+        certType,
+        domain: dominantDomain,
+        questionsAttempted: questions.length,
+        correctAnswers: correctCount,
+        durationSeconds: startedAt ? Math.max(30, Math.round((Date.now() - startedAt) / 1000)) : 0,
+      });
+      setSessionSaved(true);
+    } catch {
+      Alert.alert('No se pudo guardar', 'El resultado se mostró, pero no pudimos guardar esta sesión.');
+    }
+  };
+
+  const handleRestart = async () => {
+    await persistQuizSession();
+    setQuizState('setup');
+  };
+
+  const handleGoHome = async () => {
+    await persistQuizSession();
+    router.replace('/(tabs)');
+  };
+
+  useEffect(() => {
+    if (quizState === 'results') {
+      void persistQuizSession();
+    }
+  }, [quizState, sessionSaved, questions, answers, startedAt, certType, dominantDomain]);
 
   // ── Setup ──────────────────────────────────────────────────────────────────
   if (quizState === 'setup') {
@@ -140,10 +189,10 @@ export default function QuizScreen() {
         </Card>
 
         <View style={styles.resultActions}>
-          <Button title="Nuevo quiz" onPress={() => setQuizState('setup')} fullWidth size="lg" />
+          <Button title="Nuevo quiz" onPress={handleRestart} fullWidth size="lg" />
           <Button
             title="Ir al inicio"
-            onPress={() => router.replace('/(tabs)')}
+            onPress={handleGoHome}
             variant="outline"
             fullWidth
             size="lg"

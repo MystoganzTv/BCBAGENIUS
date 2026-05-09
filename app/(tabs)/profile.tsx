@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '@/components/ui/Button';
@@ -16,6 +16,11 @@ export default function ProfileScreen() {
   const [fullName, setFullName]     = useState(profile?.fullName ?? '');
   const [certTarget, setCertTarget] = useState<CertType>(profile?.certTarget ?? 'BCBA');
   const [saving, setSaving]         = useState(false);
+
+  useEffect(() => {
+    setFullName(profile?.fullName ?? '');
+    setCertTarget(profile?.certTarget ?? 'BCBA');
+  }, [profile?.fullName, profile?.certTarget]);
 
   const handleSave = async () => {
     setSaving(true);

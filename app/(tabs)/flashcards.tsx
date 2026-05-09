@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashCard } from '@/components/flashcards/FlashCard';
@@ -10,17 +10,21 @@ import { BorderRadius, FontSize, FontWeight, Spacing } from '@/constants/layout'
 import { getRandomFlashcards } from '@/data/flashcards';
 import { useAuth } from '@/hooks/useAuth';
 import { CertType, Flashcard } from '@/lib/types';
+import { useProgressStore } from '@/store/progressStore';
 
 type DeckState = 'setup' | 'studying' | 'complete';
 
 export default function FlashcardsScreen() {
   const { profile } = useAuth();
+  const addSession = useProgressStore((state) => state.addSession);
   const [deckState, setDeckState]   = useState<DeckState>('setup');
   const [certType, setCertType]     = useState<CertType>(profile?.certTarget ?? 'BCBA');
   const [deck, setDeck]             = useState<Flashcard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [known, setKnown]           = useState(0);
   const [toReview, setToReview]     = useState(0);
+  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [sessionSaved, setSessionSaved] = useState(false);
 
   const startDeck = (count: number) => {
     const cards = getRandomFlashcards(count, certType);
@@ -28,6 +32,8 @@ export default function FlashcardsScreen() {
     setCurrentIndex(0);
     setKnown(0);
     setToReview(0);
+    setSessionSaved(false);
+    setStartedAt(Date.now());
     setDeckState('studying');
   };
 
@@ -48,6 +54,40 @@ export default function FlashcardsScreen() {
       setCurrentIndex((i) => i + 1);
     }
   };
+
+  const dominantDomain = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const card of deck) {
+      counts[card.domain] = (counts[card.domain] ?? 0) + 1;
+    }
+
+    return Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0];
+  }, [deck]);
+
+  const persistDeckSession = async () => {
+    if (sessionSaved || deck.length === 0) return;
+
+    await addSession({
+      sessionType: 'flashcards',
+      certType,
+      domain: dominantDomain,
+      questionsAttempted: deck.length,
+      correctAnswers: known,
+      durationSeconds: startedAt ? Math.max(30, Math.round((Date.now() - startedAt) / 1000)) : 0,
+    });
+    setSessionSaved(true);
+  };
+
+  const handleNewDeck = async () => {
+    await persistDeckSession();
+    setDeckState('setup');
+  };
+
+  useEffect(() => {
+    if (deckState === 'complete') {
+      void persistDeckSession();
+    }
+  }, [deckState, sessionSaved, deck, known, startedAt, certType, dominantDomain]);
 
   // ── Setup ──────────────────────────────────────────────────────────────────
   if (deckState === 'setup') {
@@ -136,7 +176,7 @@ export default function FlashcardsScreen() {
           </View>
         </Card>
         <View style={styles.resultActions}>
-          <Button title="Nuevo mazo" onPress={() => setDeckState('setup')} fullWidth size="lg" />
+          <Button title="Nuevo mazo" onPress={handleNewDeck} fullWidth size="lg" />
         </View>
       </ScrollView>
     </SafeAreaView>

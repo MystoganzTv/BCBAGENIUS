@@ -36,7 +36,7 @@ interface ProgressStore {
   };
 }
 
-const STORAGE_KEY = '@abagenius_progress';
+const STORAGE_KEY = '@bcbagenius_progress';
 
 export const useProgressStore = create<ProgressStore>((set, get) => ({
   sessions:      [],

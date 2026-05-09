@@ -1,7 +1,7 @@
 import { QuizQuestion } from '@/lib/types';
 
 // ═══════════════════════════════════════════════════════════════════════════
-//  ABAGenius — Banco de preguntas
+//  BCBA Genius — Banco de preguntas
 //  BACB Task List 6th Edition · BCBA & BCaBA
 //  ~65 preguntas cubriendo los 7 dominios
 // ═══════════════════════════════════════════════════════════════════════════

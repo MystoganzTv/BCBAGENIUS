@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 # BCBAGenius
 
 BCBAGenius es una app de estudio para ABA construida con Expo Router, React Native y Supabase.
+=======
+# BCBA Genius
+
+BCBA Genius es una app de estudio para ABA construida con Expo Router, React Native y Supabase.
+>>>>>>> 187c0096 (create boiler and mockup)
 
 ## Stack
 

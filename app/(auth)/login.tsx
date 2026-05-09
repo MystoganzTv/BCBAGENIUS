@@ -50,7 +50,7 @@ export default function LoginScreen() {
           {/* Logo / Header */}
           <View style={styles.header}>
             <View style={styles.logoContainer}>
-              <Text style={styles.logoText}>ABA</Text>
+              <Text style={styles.logoText}>BCBA</Text>
               <Text style={styles.logoAccent}>Genius</Text>
             </View>
             <Text style={styles.subtitle}>Tu camino al BCBA & BCaBA</Text>

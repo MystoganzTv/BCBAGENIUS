@@ -1,14 +1,16 @@
 import { useFonts } from 'expo-font';
-import { Redirect, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from '@/hooks/useAuth';
+import { useProgressStore } from '@/store/progressStore';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const { session, loading, loadSession } = useAuth();
+  const loadLocalProgress = useProgressStore((state) => state.loadLocal);
 
   const [fontsLoaded] = useFonts({
     // Agrega fuentes personalizadas aquí si las necesitas
@@ -17,6 +19,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     loadSession();
+    loadLocalProgress();
   }, []);
 
   useEffect(() => {

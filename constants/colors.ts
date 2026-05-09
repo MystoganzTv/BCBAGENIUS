@@ -1,4 +1,4 @@
-// ─── Paleta de colores ABAGenius ─────────────────────────────────────────────
+// ─── Paleta de colores BCBA Genius ───────────────────────────────────────────
 export const Colors = {
   // Primarios
   primary:      '#4F46E5', // Indigo — color principal
