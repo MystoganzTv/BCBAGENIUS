@@ -1,6 +1,6 @@
-# ABAGenius
+# BCBAGenius
 
-ABAGenius es una app de estudio para ABA construida con Expo Router, React Native y Supabase.
+BCBAGenius es una app de estudio para ABA construida con Expo Router, React Native y Supabase.
 
 ## Stack
 
@@ -46,7 +46,7 @@ npm run web
 
 ## Base de datos
 
-Ejecuta el schema de [lib/schema.sql](/Users/enrique/Documents/Homework/Coding/MyProjects/ABAGENIUS/lib/schema.sql) en el SQL Editor de Supabase.
+Ejecuta el schema de [lib/schema.sql](/Users/enrique/Documents/Homework/Coding/MyProjects/BCBAGenius/lib/schema.sql) en el SQL Editor de Supabase.
 
 ## Vercel
 
