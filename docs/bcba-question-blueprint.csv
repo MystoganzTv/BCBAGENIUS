@@ -1,0 +1,66 @@
+domain,task_code,microtopic,current_count,target_count,gap,priority
+Foundations,A-01,Determinism,1,15,14,medium
+Foundations,A-02,Parsimony,1,15,14,medium
+Foundations,A-03,Private events,1,15,14,medium
+Foundations,A-04,Mentalism vs radical behaviorism,1,15,14,medium
+Foundations,A-05,Circular reasoning and explanatory fictions,1,15,14,medium
+Foundations,A-06,Radical behaviorism and lawful relations,1,15,14,medium
+Foundations,A-07,Motivating operations,1,15,14,high
+Foundations,A-08,Selectionism,1,15,14,medium
+Foundations,A-09,Respondent vs operant behavior,1,15,14,high
+Measurement,B-01,Continuous measurement,1,18,17,high
+Measurement,B-02,Discontinuous measurement and interval systems,1,18,17,high
+Measurement,B-03,Momentary time sampling and estimation logic,1,17,16,high
+Measurement,B-04,Interobserver agreement,1,17,16,high
+Measurement,B-05,Treatment validity and utility,1,17,16,medium
+Measurement,B-06,Permanent product recording,1,17,16,medium
+Measurement,B-07,Latency,1,18,17,high
+Measurement,B-08,Whole interval bias and fit-to-target behavior,1,18,17,high
+Experimental Design,C-01,Experimental control,1,18,17,high
+Experimental Design,C-02,Stable baseline and prediction,1,17,16,high
+Experimental Design,C-03,Multiple baseline design,1,17,16,high
+Experimental Design,C-04,Changing criterion design,1,17,16,medium
+Experimental Design,C-05,Alternating treatments design,1,17,16,medium
+Experimental Design,C-06,Visual analysis,1,17,16,high
+Experimental Design,C-07,Stepwise behavior change and criterion shifts,1,17,16,medium
+Behavior Change,D-01,Antecedent interventions,1,20,19,high
+Behavior Change,D-02,High-p sequences and behavioral momentum,1,20,19,high
+Behavior Change,D-03,Noncontingent reinforcement,1,20,19,high
+Behavior Change,D-04,Stimulus control,1,20,19,high
+Behavior Change,E-01,Positive reinforcement,1,14,13,high
+Behavior Change,E-02,Negative reinforcement,1,14,13,high
+Behavior Change,E-03,Extinction and extinction burst,1,14,13,high
+Behavior Change,E-04,Reinforcement schedules,1,14,13,high
+Behavior Change,E-05,DRI and differential reinforcement procedures,1,14,13,high
+Behavior Change,E-06,Functional communication training,1,14,13,high
+Behavior Change,E-07,Shaping,1,14,13,medium
+Behavior Change,E-08,Backward chaining,1,14,13,medium
+Behavior Change,E-09,Prompt fading and transfer of stimulus control,1,14,13,high
+Behavior Change,E-10,Positive punishment,1,14,13,medium
+Behavior Change,E-11,Response cost,1,15,14,medium
+Behavior Change,E-12,Time-out from positive reinforcement,1,15,14,medium
+Ethics,F-01,Informed consent,1,15,14,high
+Ethics,F-02,Least restrictive alternative,1,15,14,high
+Ethics,F-03,Responding to colleague misconduct,1,15,14,medium
+Ethics,F-04,Dual relationships and conflicts,1,15,14,medium
+Ethics,F-05,Ethical BIP requirements and FBA linkage,1,15,14,high
+Ethics,F-06,Competence and licensure boundaries,1,15,14,high
+Ethics,F-07,Confidentiality,1,15,14,high
+Ethics,F-08,Social validity,1,15,14,medium
+Personnel Supervision,G-01,Purpose of supervision,1,13,12,medium
+Personnel Supervision,G-02,Performance management,1,13,12,medium
+Personnel Supervision,G-03,BST components,1,13,12,high
+Personnel Supervision,G-04,Effective feedback,1,13,12,high
+Personnel Supervision,G-05,Supervisor responsibility,1,13,12,medium
+Personnel Supervision,G-06,Structured supervision meetings,1,13,12,medium
+Personnel Supervision,G-07,Competency-based supervision,1,13,12,high
+Personnel Supervision,G-08,BST sequencing in staff training,1,14,13,medium
+Applications,AP-01,Mand,1,14,13,high
+Applications,AP-02,Generalization programming,1,14,13,high
+Applications,AP-03,Tact,1,14,13,medium
+Applications,AP-04,Discrete trial training,1,14,13,medium
+Applications,AP-05,Natural environment teaching,1,14,13,medium
+Applications,AP-06,Listener vs tact repertoires,1,15,14,medium
+Applications,AP-07,Maintenance programming,1,15,14,medium
+Applications,AP-08,Common stimuli and generalization,1,15,14,high
+Applications,AP-09,Function-based communication replacement,1,15,14,high

@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { Colors } from '@/constants/colors';
@@ -26,11 +26,23 @@ export function QuizCard({
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
 
+  const triggerHaptic = async (isCorrect: boolean) => {
+    if (Platform.OS === 'web') return;
+
+    try {
+      await Haptics.impactAsync(
+        isCorrect ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Heavy
+      );
+    } catch {
+      // no-op when haptics are unavailable on the current device/runtime
+    }
+  };
+
   const handleSelect = (index: number) => {
     if (selectedIndex !== null) return; // Ya respondida
     setSelectedIndex(index);
     const isCorrect = index === question.correctIndex;
-    Haptics.impactAsync(isCorrect ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Heavy);
+    void triggerHaptic(isCorrect);
     setShowExplanation(showInstantFeedback);
     onAnswer(index, isCorrect);
   };
