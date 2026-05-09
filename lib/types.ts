@@ -57,6 +57,7 @@ export interface StudySession {
   id: string;
   userId: string;
   sessionType: 'quiz' | 'flashcards';
+  studyMode?: 'practice' | 'timed' | 'exam';
   certType: CertType;
   domain?: TaskListDomain;
   questionsAttempted: number;

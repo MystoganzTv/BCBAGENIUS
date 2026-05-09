@@ -6,6 +6,7 @@ import { supabase } from '@/lib/supabase';
 export interface LocalSession {
   id: string;
   sessionType: 'quiz' | 'flashcards';
+  studyMode?: 'practice' | 'timed' | 'exam';
   certType: 'BCBA' | 'BCaBA';
   domain?: string;
   questionsAttempted: number;

@@ -17,6 +17,7 @@ export interface ProgressStats {
   recentSessions: {
     id: string;
     sessionType: string;
+    studyMode?: 'practice' | 'timed' | 'exam';
     certType: string;
     correctAnswers: number;
     questionsAttempted: number;
@@ -67,6 +68,7 @@ export function useProgress(): ProgressStats {
       recentSessions: localStats.recentSessions.map((session) => ({
         id: session.id,
         sessionType: session.sessionType,
+        studyMode: session.studyMode,
         certType: session.certType,
         correctAnswers: session.correctAnswers,
         questionsAttempted: session.questionsAttempted,

@@ -32,11 +32,19 @@ export default function DashboardScreen() {
   const quickActions = [
     {
       icon: 'school-outline' as const,
-      label: 'Quiz',
-      description: 'Practica preguntas con feedback inmediato',
+      label: 'Practice Questions',
+      description: 'Drills por dominio, feedback inmediato y timed mode',
       route: '/(tabs)/quiz',
       color: Colors.primary,
       tint: '#EEF2FF',
+    },
+    {
+      icon: 'document-text-outline' as const,
+      label: 'Mock Exams',
+      description: 'Simulacros con timer global y review al final',
+      route: '/mock-exams',
+      color: '#2563EB',
+      tint: '#EFF6FF',
     },
     {
       icon: 'albums-outline' as const,
@@ -45,6 +53,14 @@ export default function DashboardScreen() {
       route: '/(tabs)/flashcards',
       color: Colors.secondary,
       tint: '#ECFDF5',
+    },
+    {
+      icon: 'analytics-outline' as const,
+      label: 'Analytics',
+      description: 'Readiness, weak areas y foco recomendado',
+      route: '/(tabs)/analytics',
+      color: Colors.warning,
+      tint: '#FFFBEB',
     },
   ];
 
@@ -82,7 +98,7 @@ export default function DashboardScreen() {
         </LinearGradient>
 
         {/* Acciones rápidas */}
-        <Text style={styles.sectionTitle}>Practicar ahora</Text>
+        <Text style={styles.sectionTitle}>Study Sections</Text>
         <View style={styles.quickActions}>
           {quickActions.map((action) => (
             <TouchableOpacity
@@ -162,7 +178,9 @@ export default function DashboardScreen() {
                     />
                     <View style={styles.sessionInfo}>
                       <Text style={styles.sessionType}>
-                        {s.sessionType === 'quiz' ? 'Quiz' : 'Flashcards'} · {s.certType}
+                        {s.sessionType === 'quiz'
+                          ? `${s.studyMode === 'exam' ? 'Mock Exam' : s.studyMode === 'timed' ? 'Timed Drill' : 'Practice Questions'} · ${s.certType}`
+                          : `Flashcards · ${s.certType}`}
                       </Text>
                       <Text style={styles.sessionDate}>
                         {new Date(s.completedAt).toLocaleDateString('es', {
@@ -234,9 +252,9 @@ const styles = StyleSheet.create({
   heroPill:       { borderRadius: BorderRadius.full, backgroundColor: Colors.surface, borderWidth: 1, borderColor: Colors.border, paddingHorizontal: 14, paddingVertical: 10 },
   heroPillText:   { fontSize: FontSize.sm, fontWeight: FontWeight.semibold, color: Colors.textSecondary },
   sectionTitle:   { fontSize: FontSize.lg, fontWeight: FontWeight.semibold, color: Colors.textPrimary, marginTop: 2 },
-  quickActions:   { flexDirection: 'row', gap: Spacing.md },
+  quickActions:   { flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.md },
   actionCard:     {
-    flex: 1,
+    width: '47%',
     backgroundColor: Colors.surface,
     borderRadius: 28,
     padding: Spacing.md,

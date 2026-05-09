@@ -12,10 +12,17 @@ interface QuizCardProps {
   question: QuizQuestion;
   questionNumber: number;
   totalQuestions: number;
+  showInstantFeedback?: boolean;
   onAnswer: (selectedIndex: number, isCorrect: boolean) => void;
 }
 
-export function QuizCard({ question, questionNumber, totalQuestions, onAnswer }: QuizCardProps) {
+export function QuizCard({
+  question,
+  questionNumber,
+  totalQuestions,
+  showInstantFeedback = true,
+  onAnswer,
+}: QuizCardProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
 
@@ -24,7 +31,7 @@ export function QuizCard({ question, questionNumber, totalQuestions, onAnswer }:
     setSelectedIndex(index);
     const isCorrect = index === question.correctIndex;
     Haptics.impactAsync(isCorrect ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Heavy);
-    setShowExplanation(true);
+    setShowExplanation(showInstantFeedback);
     onAnswer(index, isCorrect);
   };
 
@@ -90,7 +97,7 @@ export function QuizCard({ question, questionNumber, totalQuestions, onAnswer }:
       </View>
 
       {/* Explicación */}
-      {showExplanation && (
+      {showInstantFeedback && showExplanation && (
         <Card style={styles.explanationCard} padding="md">
           <View style={styles.explanationHeader}>
             <Ionicons

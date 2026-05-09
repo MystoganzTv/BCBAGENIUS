@@ -9,6 +9,7 @@ const TAB_ICON: Record<string, { active: IoniconName; inactive: IoniconName }> =
   index:      { active: 'home',         inactive: 'home-outline'      },
   quiz:       { active: 'school',       inactive: 'school-outline'    },
   flashcards: { active: 'albums',       inactive: 'albums-outline'    },
+  analytics:  { active: 'analytics',    inactive: 'analytics-outline' },
   profile:    { active: 'person-circle',inactive: 'person-circle-outline' },
 };
 
@@ -39,8 +40,9 @@ export default function TabsLayout() {
       })}
     >
       <Tabs.Screen name="index"      options={{ title: 'Inicio' }} />
-      <Tabs.Screen name="quiz"       options={{ title: 'Quiz' }} />
+      <Tabs.Screen name="quiz"       options={{ title: 'Practice' }} />
       <Tabs.Screen name="flashcards" options={{ title: 'Flashcards' }} />
+      <Tabs.Screen name="analytics"  options={{ title: 'Analytics' }} />
       <Tabs.Screen name="profile"    options={{ title: 'Perfil' }} />
     </Tabs>
   );
