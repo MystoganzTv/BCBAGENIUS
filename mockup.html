@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ABAGenius — Mockup Móvil</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a2e; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  h1.page-title { color: #a5b4fc; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+
+  /* Selector de pantallas */
+  .screen-nav { display: flex; gap: 8px; margin-bottom: 32px; flex-wrap: wrap; justify-content: center; }
+  .screen-nav button {
+    background: #2d2d4e; color: #94a3b8; border: 1px solid #3d3d6e;
+    padding: 8px 16px; border-radius: 20px; font-size: 12px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .screen-nav button.active, .screen-nav button:hover {
+    background: #4f46e5; color: #fff; border-color: #4f46e5;
+  }
+
+  /* Teléfono */
+  .phone {
+    width: 390px; min-height: 844px;
+    background: #f8f9fa;
+    border-radius: 50px;
+    box-shadow: 0 0 0 12px #1e1e3a, 0 0 0 14px #3d3d6e, 0 30px 80px rgba(0,0,0,0.5);
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 44px; background: #fff;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; font-size: 12px; font-weight: 600; color: #1e293b;
+    flex-shrink: 0;
+  }
+  .status-bar .notch {
+    width: 120px; height: 28px; background: #1e293b;
+    border-radius: 14px; position: absolute; left: 50%; transform: translateX(-50%);
+  }
+  .status-icons { display: flex; gap: 4px; align-items: center; }
+
+  /* Contenido de la pantalla */
+  .screen { flex: 1; overflow-y: auto; position: relative; }
+  .screen-content { display: none; }
+  .screen-content.active { display: block; }
+
+  /* Tab bar */
+  .tab-bar {
+    height: 68px; background: #fff; border-top: 1px solid #e2e8f0;
+    display: flex; align-items: center; justify-content: space-around;
+    padding-bottom: 8px; flex-shrink: 0;
+  }
+  .tab-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 6px 12px; border-radius: 12px; transition: background 0.15s; flex: 1; }
+  .tab-item:hover { background: #f1f5f9; }
+  .tab-item.active .tab-icon { color: #4f46e5; }
+  .tab-item.active .tab-label { color: #4f46e5; }
+  .tab-icon { font-size: 22px; color: #94a3b8; }
+  .tab-label { font-size: 10px; color: #94a3b8; font-weight: 500; }
+
+  /* ── Variables de estilo ── */
+  :root {
+    --primary: #4f46e5;
+    --primary-light: #818cf8;
+    --secondary: #10b981;
+    --error: #ef4444;
+    --warning: #f59e0b;
+    --bg: #f8f9fa;
+    --surface: #ffffff;
+    --surface-alt: #f1f5f9;
+    --border: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-tertiary: #94a3b8;
+    --text-inverse: #ffffff;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  /* ── Utilidades ── */
+  .p-lg { padding: 20px; }
+  .gap-md { gap: 14px; display: flex; flex-direction: column; }
+  .card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+  .badge-info    { background: #dbeafe; color: #1e40af; }
+  .badge-success { background: #d1fae5; color: #065f46; }
+  .badge-warning { background: #fef3c7; color: #92400e; }
+  .badge-default { background: var(--surface-alt); color: var(--text-secondary); }
+  .btn { display: flex; align-items: center; justify-content: center; height: 48px; border-radius: var(--radius-md); font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: opacity 0.15s; }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary  { background: var(--primary); color: var(--text-inverse); }
+  .btn-secondary{ background: var(--secondary); color: var(--text-inverse); }
+  .btn-outline  { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+  .btn-ghost    { background: transparent; color: var(--primary); }
+  .btn-danger   { background: var(--error); color: var(--text-inverse); }
+  .input { height: 48px; border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 0 14px; font-size: 15px; color: var(--text-primary); background: var(--surface-alt); width: 100%; }
+  .label { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; display: block; }
+  .field { display: flex; flex-direction: column; margin-bottom: 14px; }
+  .progress-track { width: 100%; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill  { height: 100%; border-radius: 4px; background: var(--primary); transition: width 0.4s ease; }
+  .section-title  { font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 14px; }
+  .screen-title   { font-size: 24px; font-weight: 800; color: var(--text-primary); }
+  .screen-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 2px; margin-bottom: 6px; }
+  .seg-control { display: flex; gap: 8px; }
+  .seg-option { flex: 1; height: 42px; border-radius: var(--radius-md); border: 1.5px solid var(--border); background: var(--surface-alt); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+  .seg-option.active { border-color: var(--primary); background: #eef2ff; color: var(--primary); }
+  .divider { height: 1px; background: var(--border); }
+
+  /* ── Login ── */
+  .login-gradient { background: linear-gradient(160deg, #4f46e5 0%, #3730a3 100%); min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+  .logo-row { display: flex; align-items: baseline; gap: 2px; margin-bottom: 6px; }
+  .logo-text { font-size: 42px; font-weight: 800; color: #fff; }
+  .logo-accent { font-size: 42px; font-weight: 800; color: #a5b4fc; }
+  .login-subtitle { color: #c7d2fe; font-size: 14px; margin-bottom: 32px; }
+  .login-card { background: #fff; border-radius: 24px; padding: 24px; width: 100%; }
+  .login-title { font-size: 22px; font-weight: 800; color: var(--text-primary); margin-bottom: 20px; }
+  .login-footer { display: flex; justify-content: center; margin-top: 16px; font-size: 13px; gap: 4px; }
+  .link { color: var(--primary); font-weight: 600; cursor: pointer; }
+
+  /* ── Dashboard ── */
+  .dash-screen { background: var(--bg); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .dash-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .greeting { font-size: 20px; font-weight: 800; color: var(--text-primary); }
+  .sub-greeting { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+  .streak-card { background: var(--primary); border-radius: var(--radius-lg); padding: 16px; display: flex; align-items: center; gap: 16px; }
+  .streak-emoji { font-size: 32px; }
+  .streak-info { text-align: center; }
+  .streak-count { font-size: 24px; font-weight: 800; color: #fff; }
+  .streak-label { font-size: 11px; color: #c7d2fe; }
+  .streak-div { width: 1px; height: 40px; background: #6366f1; }
+  .quick-actions { display: flex; gap: 12px; }
+  .action-card { flex: 1; background: var(--surface); border-radius: var(--radius-lg); padding: 16px; text-align: center; border-top: 3px solid var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06); cursor: pointer; }
+  .action-card:nth-child(2) { border-top-color: var(--secondary); }
+  .action-icon { font-size: 28px; margin-bottom: 6px; }
+  .action-label { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .stats-row { display: flex; gap: 8px; }
+  .stat-card { flex: 1; background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--border); padding: 12px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .stat-value { font-size: 24px; font-weight: 800; color: var(--primary); }
+  .stat-label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .domain-item { margin-bottom: 12px; }
+  .domain-label-row { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
+  .domain-name { color: var(--text-secondary); font-weight: 500; }
+  .domain-pct { color: var(--text-primary); font-weight: 700; }
+
+  /* ── Quiz ── */
+  .quiz-screen { background: var(--bg); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .quiz-question-card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 16px; }
+  .task-code { font-size: 10px; color: var(--text-tertiary); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .question-text { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.5; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option { border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 14px; display: flex; align-items: center; gap: 10px; cursor: pointer; background: var(--surface); transition: all 0.15s; }
+  .option:hover { border-color: var(--primary); background: #eef2ff; }
+  .option.correct { border-color: var(--secondary); background: #ecfdf5; }
+  .option.wrong   { border-color: var(--error);     background: #fef2f2; }
+  .option-label { width: 28px; height: 28px; border-radius: 14px; background: var(--surface-alt); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .option-text { font-size: 14px; color: var(--text-primary); line-height: 1.4; flex: 1; }
+  .option-check { margin-left: auto; font-size: 18px; }
+  .explanation-card { background: #f0fdf4; border: 1px solid var(--secondary); border-radius: var(--radius-md); padding: 14px; }
+  .explanation-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .explanation-text { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .quiz-setup { background: var(--bg); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .count-sel { display: flex; gap: 8px; }
+  .count-opt { flex: 1; height: 44px; border-radius: var(--radius-md); border: 1.5px solid var(--border); background: var(--surface-alt); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; cursor: pointer; color: var(--text-secondary); }
+  .count-opt.active { border-color: var(--primary); background: #eef2ff; color: var(--primary); }
+
+  /* ── Flashcards ── */
+  .fc-screen { background: var(--bg); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .flashcard { width: 100%; height: 240px; background: var(--surface); border-radius: var(--radius-xl); border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.08); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; cursor: pointer; position: relative; }
+  .fc-hint { position: absolute; top: 16px; font-size: 11px; color: var(--text-tertiary); }
+  .fc-term { font-size: 26px; font-weight: 800; color: var(--text-primary); text-align: center; line-height: 1.2; }
+  .fc-domain-badge { position: absolute; bottom: 16px; background: var(--surface-alt); border-radius: 999px; padding: 3px 12px; font-size: 11px; color: var(--text-secondary); }
+  .fc-task-code { font-size: 10px; color: var(--text-tertiary); font-weight: 700; letter-spacing: 1px; margin-bottom: 12px; }
+  .fc-back { background: var(--primary); }
+  .fc-back .fc-term { font-size: 14px; color: #fff; font-weight: 500; line-height: 1.6; }
+  .fc-back .fc-hint { color: #c7d2fe; }
+  .fc-actions { display: flex; gap: 12px; }
+  .fc-btn { flex: 1; height: 48px; border-radius: var(--radius-md); border: 1.5px solid; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .fc-btn-repeat { border-color: var(--warning); background: #fffbeb; color: var(--warning); }
+  .fc-btn-know   { border-color: var(--secondary); background: #ecfdf5; color: var(--secondary); }
+  .deck-grid { display: flex; gap: 8px; }
+  .deck-opt { flex: 1; background: var(--surface-alt); border-radius: var(--radius-md); padding: 14px 8px; text-align: center; cursor: pointer; border: 1.5px solid transparent; }
+  .deck-opt:hover { border-color: var(--primary); }
+  .deck-count { font-size: 24px; font-weight: 800; color: var(--primary); }
+  .deck-label { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .deck-sub   { font-size: 11px; color: var(--text-tertiary); }
+
+  /* ── Perfil ── */
+  .profile-screen { background: var(--bg); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .profile-card { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .avatar { width: 72px; height: 72px; border-radius: 36px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; color: #fff; }
+  .profile-name  { font-size: 20px; font-weight: 800; color: var(--text-primary); }
+  .profile-email { font-size: 13px; color: var(--text-secondary); }
+  .profile-cert  { font-size: 13px; color: var(--text-secondary); margin-bottom: 4px; }
+  .options-card { display: flex; flex-direction: column; }
+  .option-row { display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .option-row:last-child { border-bottom: none; }
+  .option-icon { font-size: 20px; }
+  .option-label-text { flex: 1; font-size: 15px; color: var(--text-primary); }
+  .option-arrow { font-size: 12px; color: var(--text-tertiary); }
+
+  /* ── Resultados Quiz ── */
+  .results-screen { background: var(--bg); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .score-card { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .score-pct  { font-size: 72px; font-weight: 800; color: var(--primary); line-height: 1; }
+  .score-sub  { font-size: 16px; color: var(--text-secondary); }
+
+  /* Scrollbar oculta */
+  .screen::-webkit-scrollbar { display: none; }
+  .screen { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Estado activo toggle */
+  .tab-auth .tab-bar, .tab-auth .screen-tabs-only { display: none !important; }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">ABAGenius — Mockup Interactivo</h1>
+
+<div class="screen-nav">
+  <button onclick="showScreen('login')" id="nav-login" class="active">🔐 Login</button>
+  <button onclick="showScreen('register')" id="nav-register">📝 Registro</button>
+  <button onclick="showScreen('dashboard')" id="nav-dashboard">🏠 Dashboard</button>
+  <button onclick="showScreen('quiz-setup')" id="nav-quiz-setup">🎯 Quiz Setup</button>
+  <button onclick="showScreen('quiz-active')" id="nav-quiz-active">📝 Quiz Activo</button>
+  <button onclick="showScreen('quiz-results')" id="nav-quiz-results">🏆 Resultados</button>
+  <button onclick="showScreen('flashcards-setup')" id="nav-flashcards-setup">📚 FC Setup</button>
+  <button onclick="showScreen('flashcards-active')" id="nav-flashcards-active">🃏 FC Activo</button>
+  <button onclick="showScreen('profile')" id="nav-profile">👤 Perfil</button>
+</div>
+
+<div class="phone">
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="notch"></div>
+    <div class="status-icons">
+      <span>📶</span><span>🔋</span>
+    </div>
+  </div>
+
+  <!-- Pantallas -->
+  <div class="screen" id="screen">
+
+    <!-- ── LOGIN ── -->
+    <div class="screen-content active" id="sc-login">
+      <div class="login-gradient">
+        <div class="logo-row"><span class="logo-text">ABA</span><span class="logo-accent">Genius</span></div>
+        <p class="login-subtitle">Tu camino al BCBA &amp; BCaBA</p>
+        <div class="login-card">
+          <p class="login-title">Iniciar sesión</p>
+          <div class="field">
+            <label class="label">Correo electrónico</label>
+            <input class="input" type="email" placeholder="tu@correo.com" />
+          </div>
+          <div class="field">
+            <label class="label">Contraseña</label>
+            <input class="input" type="password" placeholder="••••••••" />
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="showScreen('dashboard')">Entrar</button>
+          <div class="login-footer">
+            <span>¿No tienes cuenta?</span>
+            <span class="link" onclick="showScreen('register')">Regístrate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── REGISTRO ── -->
+    <div class="screen-content" id="sc-register">
+      <div class="login-gradient">
+        <div class="logo-row"><span class="logo-text">ABA</span><span class="logo-accent">Genius</span></div>
+        <p class="login-subtitle">Crea tu cuenta gratuita</p>
+        <div class="login-card">
+          <p class="login-title">Registro</p>
+          <div class="field">
+            <label class="label">Nombre completo</label>
+            <input class="input" placeholder="Tu nombre" />
+          </div>
+          <div class="field">
+            <label class="label">Correo electrónico</label>
+            <input class="input" type="email" placeholder="tu@correo.com" />
+          </div>
+          <div class="field">
+            <label class="label">Contraseña</label>
+            <input class="input" type="password" placeholder="Mínimo 6 caracteres" />
+          </div>
+          <div class="field">
+            <label class="label">¿Qué certificación buscas?</label>
+            <div class="seg-control">
+              <div class="seg-option active" onclick="toggleSeg(this)">BCBA</div>
+              <div class="seg-option" onclick="toggleSeg(this)">BCaBA</div>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="showScreen('dashboard')">Crear cuenta</button>
+          <div class="login-footer">
+            <span>¿Ya tienes cuenta?</span>
+            <span class="link" onclick="showScreen('login')">Inicia sesión</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DASHBOARD ── -->
+    <div class="screen-content" id="sc-dashboard">
+      <div class="dash-screen">
+        <div class="dash-header">
+          <div>
+            <div class="greeting">Hola, María 👋</div>
+            <div class="sub-greeting">Sigue estudiando para tu BCBA</div>
+          </div>
+          <span class="badge badge-info">BCBA</span>
+        </div>
+
+        <div class="streak-card">
+          <div class="streak-emoji">🔥</div>
+          <div class="streak-info"><div class="streak-count">7 días</div><div class="streak-label">racha actual</div></div>
+          <div class="streak-div"></div>
+          <div class="streak-info"><div class="streak-count">14</div><div class="streak-label">record</div></div>
+        </div>
+
+        <div class="section-title">Practicar ahora</div>
+        <div class="quick-actions">
+          <div class="action-card" onclick="showScreen('quiz-setup')">
+            <div class="action-icon">🎓</div>
+            <div class="action-label">Quiz</div>
+          </div>
+          <div class="action-card" onclick="showScreen('flashcards-setup')">
+            <div class="action-icon">📚</div>
+            <div class="action-label">Flashcards</div>
+          </div>
+        </div>
+
+        <div class="section-title">Tu progreso</div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-value">23</div><div class="stat-label">Sesiones</div></div>
+          <div class="stat-card"><div class="stat-value">74%</div><div class="stat-label">Precisión</div></div>
+          <div class="stat-card"><div class="stat-value">312</div><div class="stat-label">Preguntas</div></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title" style="font-size:15px;margin-bottom:12px">Por dominio</div>
+          <div class="domain-item">
+            <div class="domain-label-row"><span class="domain-name">Foundations</span><span class="domain-pct">82%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:82%;background:#6366f1"></div></div>
+          </div>
+          <div class="domain-item">
+            <div class="domain-label-row"><span class="domain-name">Behavior Change</span><span class="domain-pct">70%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:70%;background:#10b981"></div></div>
+          </div>
+          <div class="domain-item">
+            <div class="domain-label-row"><span class="domain-name">Measurement</span><span class="domain-pct">65%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:65%;background:#14b8a6"></div></div>
+          </div>
+          <div class="domain-item" style="margin-bottom:0">
+            <div class="domain-label-row"><span class="domain-name">Ethics</span><span class="domain-pct">58%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:58%;background:#ec4899"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── QUIZ SETUP ── -->
+    <div class="screen-content" id="sc-quiz-setup">
+      <div class="quiz-setup">
+        <div class="screen-title">Quiz de práctica</div>
+        <div class="screen-subtitle">Configura tu sesión de estudio</div>
+
+        <div class="card">
+          <div class="section-title">Certificación</div>
+          <div class="seg-control">
+            <div class="seg-option active" onclick="toggleSeg(this)">BCBA</div>
+            <div class="seg-option" onclick="toggleSeg(this)">BCaBA</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Número de preguntas</div>
+          <div class="count-sel">
+            <div class="count-opt" onclick="toggleCount(this)">5</div>
+            <div class="count-opt active" onclick="toggleCount(this)">10</div>
+            <div class="count-opt" onclick="toggleCount(this)">20</div>
+            <div class="count-opt" onclick="toggleCount(this)">30</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;height:54px;font-size:16px" onclick="showScreen('quiz-active')">Comenzar Quiz</button>
+      </div>
+    </div>
+
+    <!-- ── QUIZ ACTIVO ── -->
+    <div class="screen-content" id="sc-quiz-active">
+      <div style="padding:16px 20px 0">
+        <div class="progress-track"><div class="progress-fill" style="width:30%"></div></div>
+        <div style="font-size:11px;color:var(--text-tertiary);text-align:right;margin-top:4px">3 / 10</div>
+      </div>
+      <div class="quiz-screen">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="badge" style="background:#eef2ff;color:#4f46e5">Behavior Change</span>
+          <span class="badge badge-default">E-01</span>
+        </div>
+
+        <div class="quiz-question-card">
+          <div class="task-code">Task E-01 · BCBA</div>
+          <div class="question-text">Positive reinforcement is defined as:</div>
+        </div>
+
+        <div class="options">
+          <div class="option" onclick="selectOption(this, false)">
+            <div class="option-label">A</div>
+            <div class="option-text">Adding an aversive stimulus after a behavior to increase it</div>
+          </div>
+          <div class="option" onclick="selectOption(this, false)">
+            <div class="option-label">B</div>
+            <div class="option-text">Removing a stimulus after a behavior to increase it</div>
+          </div>
+          <div class="option correct" onclick="selectOption(this, true)">
+            <div class="option-label" style="background:#d1fae5;color:#065f46">C</div>
+            <div class="option-text" style="color:#065f46">Adding a stimulus after a behavior that increases the future frequency of that behavior</div>
+            <div class="option-check">✅</div>
+          </div>
+          <div class="option" onclick="selectOption(this, false)">
+            <div class="option-label">D</div>
+            <div class="option-text">Removing a stimulus after a behavior that decreases its future frequency</div>
+          </div>
+        </div>
+
+        <div class="explanation-card">
+          <div class="explanation-header">✅ ¡Correcto!</div>
+          <div class="explanation-text">Positive reinforcement involves the contingent delivery of a stimulus following a behavior that results in an increase in the future frequency of that behavior.</div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%" onclick="showScreen('quiz-results')">Siguiente →</button>
+      </div>
+    </div>
+
+    <!-- ── QUIZ RESULTADOS ── -->
+    <div class="screen-content" id="sc-quiz-results">
+      <div class="results-screen">
+        <div class="screen-title">Resultados</div>
+        <div class="card score-card">
+          <div class="score-pct">80%</div>
+          <div class="score-sub">8 de 10 correctas</div>
+          <span class="badge badge-success" style="align-self:center">¡Aprobado!</span>
+          <div style="width:100%">
+            <div class="progress-track" style="height:10px"><div class="progress-fill" style="width:80%;background:#10b981"></div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button class="btn btn-primary" style="width:100%" onclick="showScreen('quiz-setup')">Nuevo quiz</button>
+          <button class="btn btn-outline" style="width:100%" onclick="showScreen('dashboard')">Ir al inicio</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FLASHCARDS SETUP ── -->
+    <div class="screen-content" id="sc-flashcards-setup">
+      <div class="fc-screen">
+        <div class="screen-title">Flashcards</div>
+        <div class="screen-subtitle">Repasa conceptos clave del Task List</div>
+
+        <div class="card">
+          <div class="section-title">Certificación</div>
+          <div class="seg-control">
+            <div class="seg-option active" onclick="toggleSeg(this)">BCBA</div>
+            <div class="seg-option" onclick="toggleSeg(this)">BCaBA</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Tamaño del mazo</div>
+          <div class="deck-grid">
+            <div class="deck-opt" onclick="showScreen('flashcards-active')">
+              <div class="deck-count">5</div>
+              <div class="deck-label">Rápido</div>
+              <div class="deck-sub">~5 min</div>
+            </div>
+            <div class="deck-opt" onclick="showScreen('flashcards-active')">
+              <div class="deck-count">10</div>
+              <div class="deck-label">Estándar</div>
+              <div class="deck-sub">~10 min</div>
+            </div>
+            <div class="deck-opt" onclick="showScreen('flashcards-active')">
+              <div class="deck-count">20</div>
+              <div class="deck-label">Intensivo</div>
+              <div class="deck-sub">~20 min</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FLASHCARDS ACTIVO ── -->
+    <div class="screen-content" id="sc-flashcards-active">
+      <div style="padding:16px 20px 0">
+        <div class="progress-track"><div class="progress-fill" style="width:40%"></div></div>
+        <div style="font-size:11px;color:var(--text-tertiary);text-align:right;margin-top:4px">4 / 10</div>
+      </div>
+      <div class="fc-screen">
+        <div class="flashcard" id="fc-card" onclick="flipCard()">
+          <div id="fc-front">
+            <div class="fc-hint">Toca para ver la definición</div>
+            <div class="fc-task-code">E-05 · Behavior Change</div>
+            <div class="fc-term">Shaping</div>
+            <div class="fc-domain-badge">Behavior Change</div>
+          </div>
+          <div id="fc-back" style="display:none;text-align:center">
+            <div class="fc-hint" style="color:#c7d2fe">Definición</div>
+            <div class="fc-term" style="font-size:14px;color:#fff;font-weight:500;line-height:1.6">
+              The process of systematically reinforcing successive approximations toward a terminal behavior while extinguishing previous approximations.
+            </div>
+          </div>
+        </div>
+
+        <div class="fc-actions" id="fc-actions" style="display:none">
+          <div class="fc-btn fc-btn-repeat" onclick="nextCard()">↩ Repasar</div>
+          <div class="fc-btn fc-btn-know" onclick="nextCard()">Lo sé ✓</div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:13px;color:var(--text-secondary);text-align:center">
+            💡 Toca la tarjeta para voltearla, luego elige si la sabes o necesitas repasar.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PERFIL ── -->
+    <div class="screen-content" id="sc-profile">
+      <div class="profile-screen">
+        <div class="screen-title">Mi perfil</div>
+
+        <div class="card profile-card">
+          <div class="avatar">M</div>
+          <div class="profile-name">María González</div>
+          <div class="profile-email">maria@ejemplo.com</div>
+          <div class="profile-cert">🎯 Preparándose para: BCBA</div>
+          <button class="btn btn-outline" style="width:100%">Editar perfil</button>
+        </div>
+
+        <div class="card options-card">
+          <div class="option-row">
+            <span class="option-icon">❓</span>
+            <span class="option-label-text">Ayuda y soporte</span>
+            <span class="option-arrow">›</span>
+          </div>
+          <div class="option-row">
+            <span class="option-icon">📄</span>
+            <span class="option-label-text">Términos y privacidad</span>
+            <span class="option-arrow">›</span>
+          </div>
+          <div class="option-row">
+            <span class="option-icon">ℹ️</span>
+            <span class="option-label-text">Versión 1.0.0</span>
+            <span class="option-arrow">›</span>
+          </div>
+        </div>
+
+        <button class="btn btn-danger" style="width:100%" onclick="showScreen('login')">Cerrar sesión</button>
+      </div>
+    </div>
+
+  </div><!-- /screen -->
+
+  <!-- Tab bar (oculto en auth screens) -->
+  <div class="tab-bar" id="tab-bar">
+    <div class="tab-item active" id="tab-home" onclick="showTab('dashboard')">
+      <div class="tab-icon">🏠</div>
+      <div class="tab-label">Inicio</div>
+    </div>
+    <div class="tab-item" id="tab-quiz" onclick="showTab('quiz-setup')">
+      <div class="tab-icon">🎓</div>
+      <div class="tab-label">Quiz</div>
+    </div>
+    <div class="tab-item" id="tab-fc" onclick="showTab('flashcards-setup')">
+      <div class="tab-icon">📚</div>
+      <div class="tab-label">Flashcards</div>
+    </div>
+    <div class="tab-item" id="tab-profile" onclick="showTab('profile')">
+      <div class="tab-icon">👤</div>
+      <div class="tab-label">Perfil</div>
+    </div>
+  </div>
+</div><!-- /phone -->
+
+<script>
+const AUTH_SCREENS = ['login', 'register'];
+const TAB_MAP = {
+  'dashboard': 'tab-home',
+  'quiz-setup': 'tab-quiz',
+  'quiz-active': 'tab-quiz',
+  'quiz-results': 'tab-quiz',
+  'flashcards-setup': 'tab-fc',
+  'flashcards-active': 'tab-fc',
+  'profile': 'tab-profile',
+};
+
+function showScreen(name) {
+  // Ocultar todo
+  document.querySelectorAll('.screen-content').forEach(el => el.classList.remove('active'));
+  // Mostrar el solicitado
+  const el = document.getElementById('sc-' + name);
+  if (el) el.classList.add('active');
+
+  // Tab bar
+  const tabBar = document.getElementById('tab-bar');
+  if (AUTH_SCREENS.includes(name)) {
+    tabBar.style.display = 'none';
+  } else {
+    tabBar.style.display = 'flex';
+    // Resaltar tab activo
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    const tabId = TAB_MAP[name];
+    if (tabId) document.getElementById(tabId)?.classList.add('active');
+  }
+
+  // Nav selector
+  document.querySelectorAll('.screen-nav button').forEach(b => b.classList.remove('active'));
+  const navBtn = document.getElementById('nav-' + name);
+  if (navBtn) navBtn.classList.add('active');
+}
+
+function showTab(name) { showScreen(name); }
+
+function toggleSeg(el) {
+  const parent = el.parentElement;
+  parent.querySelectorAll('.seg-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function toggleCount(el) {
+  const parent = el.parentElement;
+  parent.querySelectorAll('.count-opt').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selectOption(el, isCorrect) {
+  // Solo para demostración visual — ya está marcado en el HTML
+}
+
+let fcFlipped = false;
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  const card = document.getElementById('fc-card');
+  const front = document.getElementById('fc-front');
+  const back  = document.getElementById('fc-back');
+  const actions = document.getElementById('fc-actions');
+
+  if (fcFlipped) {
+    front.style.display = 'none';
+    back.style.display  = 'block';
+    card.style.background = 'var(--primary)';
+    actions.style.display = 'flex';
+  } else {
+    front.style.display = 'flex';
+    front.style.flexDirection = 'column';
+    front.style.alignItems = 'center';
+    back.style.display  = 'none';
+    card.style.background = 'var(--surface)';
+    actions.style.display = 'none';
+  }
+}
+
+function nextCard() {
+  fcFlipped = false;
+  const card = document.getElementById('fc-card');
+  const front = document.getElementById('fc-front');
+  const back  = document.getElementById('fc-back');
+  const actions = document.getElementById('fc-actions');
+  front.style.display = '';
+  back.style.display  = 'none';
+  card.style.background = 'var(--surface)';
+  actions.style.display = 'none';
+}
+
+// Init
+showScreen('login');
+</script>
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ABAGenius — Prepárate para el BCBA & BCaBA</title>
+<meta name="description" content="La app de estudio inteligente para candidatos al BCBA y BCaBA. Banco de preguntas, flashcards y seguimiento de progreso."/>
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  color: #1e293b;
+  background: #ffffff;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Variables ── */
+:root {
+  --primary:       #4F46E5;
+  --primary-light: #818CF8;
+  --primary-dark:  #3730A3;
+  --secondary:     #10B981;
+  --accent:        #7C3AED;
+  --bg:            #F8FAFC;
+  --surface:       #FFFFFF;
+  --text-primary:  #1E293B;
+  --text-secondary:#64748B;
+  --text-tertiary: #94A3B8;
+  --border:        #E2E8F0;
+  --radius-md:     12px;
+  --radius-lg:     20px;
+  --radius-xl:     32px;
+  --shadow-sm:     0 1px 4px rgba(0,0,0,.06);
+  --shadow-md:     0 4px 20px rgba(0,0,0,.08);
+  --shadow-lg:     0 12px 48px rgba(79,70,229,.15);
+}
+
+/* ── Tipografía ── */
+h1,h2,h3,h4 { font-weight: 800; line-height: 1.15; color: var(--text-primary); }
+h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); letter-spacing: -1.5px; }
+h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); letter-spacing: -1px; }
+h3 { font-size: 1.2rem; }
+p  { color: var(--text-secondary); font-size: 1.05rem; }
+
+/* ── Layout ── */
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+.section   { padding: 96px 0; }
+.section-sm{ padding: 64px 0; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226,232,240,0.6);
+  transition: box-shadow .3s;
+}
+.nav-inner {
+  max-width: 1140px; margin: 0 auto; padding: 0 24px;
+  height: 68px; display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: linear-gradient(135deg, #4F46E5, #7C3AED);
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-logo-icon svg { width: 24px; height: 24px; }
+.nav-logo-text { font-size: 1.2rem; font-weight: 800; color: var(--text-primary); }
+.nav-logo-text span { color: var(--primary); }
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-links a {
+  padding: 8px 16px; border-radius: 8px; font-size: .9rem;
+  font-weight: 600; color: var(--text-secondary); text-decoration: none;
+  transition: background .2s, color .2s;
+}
+.nav-links a:hover { background: #f1f5f9; color: var(--text-primary); }
+.btn-nav {
+  background: var(--primary); color: #fff !important;
+  border-radius: 10px; padding: 10px 20px !important;
+  transition: transform .15s, box-shadow .15s !important;
+}
+.btn-nav:hover { background: var(--primary-dark) !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,.35) !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #EEF2FF 0%, #F5F3FF 40%, #ECFDF5 100%);
+  display: flex; align-items: center;
+  padding-top: 68px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(79,70,229,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(16,185,129,.10) 0%, transparent 60%);
+}
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; gap: 64px;
+  position: relative; z-index: 1;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #EEF2FF; color: var(--primary);
+  border: 1px solid #C7D2FE;
+  border-radius: 999px; padding: 6px 16px;
+  font-size: .8rem; font-weight: 700;
+  letter-spacing: .5px; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero-title { margin-bottom: 24px; }
+.hero-title .accent { color: var(--primary); }
+.hero-desc { font-size: 1.15rem; line-height: 1.7; margin-bottom: 36px; max-width: 500px; }
+.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* Teléfono hero */
+.hero-phone-wrap {
+  display: flex; justify-content: center; align-items: center;
+  perspective: 1200px;
+}
+.hero-phone {
+  width: 280px;
+  background: #1e1e3a;
+  border-radius: 44px;
+  padding: 10px;
+  box-shadow: 0 40px 100px rgba(79,70,229,.25), 0 0 0 1px rgba(255,255,255,.1) inset;
+  transform: rotateY(-8deg) rotateX(4deg);
+  transition: transform .4s ease;
+}
+.hero-phone:hover { transform: rotateY(0deg) rotateX(0deg); }
+.phone-screen {
+  background: linear-gradient(160deg, #4F46E5 0%, #3730A3 100%);
+  border-radius: 36px;
+  overflow: hidden;
+  height: 520px;
+  display: flex; flex-direction: column;
+}
+.phone-status { height: 36px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; }
+.phone-status span { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.8); }
+.phone-notch { width: 80px; height: 22px; background: #1e1e3a; border-radius: 11px; }
+.phone-body { flex: 1; background: #f8fafc; border-radius: 28px 28px 36px 36px; overflow: hidden; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.phone-header { display: flex; justify-content: space-between; align-items: center; }
+.phone-greeting { font-size: 14px; font-weight: 800; color: #1e293b; }
+.phone-sub { font-size: 10px; color: #64748b; }
+.phone-badge { background: #dbeafe; color: #1e40af; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 99px; text-transform: uppercase; }
+.phone-streak { background: #4F46E5; border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+.phone-streak-fire { font-size: 20px; }
+.phone-streak-val { font-size: 18px; font-weight: 800; color: #fff; }
+.phone-streak-lbl { font-size: 9px; color: #c7d2fe; }
+.phone-streak-div { width: 1px; height: 30px; background: #6366f1; }
+.phone-actions { display: flex; gap: 8px; }
+.phone-action { flex: 1; background: #fff; border-radius: 12px; padding: 10px 8px; text-align: center; border-top: 2.5px solid #4F46E5; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+.phone-action:nth-child(2) { border-top-color: #10b981; }
+.phone-action-icon { font-size: 20px; margin-bottom: 3px; }
+.phone-action-lbl { font-size: 11px; font-weight: 700; color: #1e293b; }
+.phone-stats { display: flex; gap: 6px; }
+.phone-stat { flex: 1; background: #fff; border-radius: 10px; padding: 8px; text-align: center; border: 1px solid #e2e8f0; }
+.phone-stat-val { font-size: 16px; font-weight: 800; color: #4f46e5; }
+.phone-stat-lbl { font-size: 9px; color: #64748b; }
+.phone-domain { background: #fff; border-radius: 12px; padding: 12px; border: 1px solid #e2e8f0; }
+.phone-domain-title { font-size: 11px; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
+.phone-domain-row { margin-bottom: 6px; }
+.phone-domain-label { display: flex; justify-content: space-between; font-size: 9px; color: #64748b; margin-bottom: 2px; }
+.phone-track { height: 5px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+.phone-fill { height: 100%; border-radius: 3px; }
+
+/* Floating badges */
+.hero-floating { position: absolute; right: 0; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.float-badge {
+  position: absolute;
+  background: #fff;
+  border-radius: 16px;
+  padding: 10px 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.12);
+  font-size: .85rem; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+  animation: floatY 3s ease-in-out infinite;
+}
+.float-badge:nth-child(1) { top: -120px; right: 300px; animation-delay: 0s; }
+.float-badge:nth-child(2) { top: 40px;   right: 20px;  animation-delay: .7s; }
+.float-badge:nth-child(3) { top: 200px;  right: 280px; animation-delay: 1.4s; }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 28px; border-radius: var(--radius-md);
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+  border: none; text-decoration: none; transition: all .2s;
+}
+.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 14px rgba(79,70,229,.35); }
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,70,229,.4); }
+.btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+.btn-outline:hover { background: #EEF2FF; transform: translateY(-2px); }
+.btn-lg { padding: 18px 36px; font-size: 1.1rem; border-radius: var(--radius-lg); }
+.btn-white { background: #fff; color: var(--primary); box-shadow: 0 4px 14px rgba(0,0,0,.12); }
+.btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+
+/* ── BADGE ── */
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 999px;
+  font-size: .78rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase;
+}
+.pill-primary { background: #EEF2FF; color: var(--primary); border: 1px solid #C7D2FE; }
+.pill-green   { background: #D1FAE5; color: #065f46; border: 1px solid #A7F3D0; }
+.pill-purple  { background: #F5F3FF; color: #6D28D9; border: 1px solid #DDD6FE; }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  background: var(--primary);
+  padding: 40px 0;
+}
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 32px; text-align: center;
+}
+.stat-number { font-size: 2.8rem; font-weight: 800; color: #fff; line-height: 1; }
+.stat-label  { font-size: .9rem; color: #C7D2FE; margin-top: 6px; font-weight: 500; }
+
+/* ── FEATURES ── */
+.features-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.feature-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform .25s, box-shadow .25s;
+  position: relative; overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--card-accent, var(--primary));
+}
+.feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.feature-icon {
+  width: 56px; height: 56px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; margin-bottom: 20px;
+}
+.feature-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+.feature-desc  { font-size: .95rem; line-height: 1.65; }
+
+/* ── CERTS SECTION ── */
+.certs-section { background: var(--bg); }
+.certs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.cert-card {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  border: 2px solid var(--border);
+  transition: border-color .25s, box-shadow .25s;
+}
+.cert-card:hover { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79,70,229,.08); }
+.cert-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 64px; height: 64px; border-radius: 18px;
+  font-size: 1.8rem; font-weight: 900; color: #fff;
+  margin-bottom: 20px;
+}
+.cert-badge-bcba  { background: linear-gradient(135deg, #4F46E5, #7C3AED); }
+.cert-badge-bcaba { background: linear-gradient(135deg, #0EA5E9, #6366F1); }
+.cert-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
+.cert-full  { font-size: .9rem; color: var(--text-secondary); margin-bottom: 16px; font-weight: 500; }
+.cert-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.cert-features li { display: flex; align-items: flex-start; gap: 10px; font-size: .95rem; }
+.cert-features li::before { content: '✓'; color: var(--secondary); font-weight: 800; flex-shrink: 0; }
+
+/* ── HOW IT WORKS ── */
+.steps { display: flex; flex-direction: column; gap: 0; max-width: 700px; margin: 0 auto; }
+.step {
+  display: grid; grid-template-columns: 60px 1fr;
+  gap: 24px; align-items: flex-start;
+  position: relative; padding-bottom: 40px;
+}
+.step:last-child { padding-bottom: 0; }
+.step:not(:last-child)::before {
+  content: '';
+  position: absolute; left: 29px; top: 60px; bottom: 0;
+  width: 2px; background: linear-gradient(to bottom, var(--primary), transparent);
+}
+.step-num {
+  width: 60px; height: 60px; border-radius: 18px;
+  background: linear-gradient(135deg, #4F46E5, #7C3AED);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; font-weight: 900; color: #fff; flex-shrink: 0;
+  box-shadow: 0 6px 20px rgba(79,70,229,.3);
+}
+.step-content h3 { font-size: 1.15rem; margin-bottom: 6px; }
+.step-content p  { font-size: .95rem; }
+
+/* ── TESTIMONIALS ── */
+.testimonials-section { background: linear-gradient(160deg, #EEF2FF, #F5F3FF); }
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.testimonial-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(226,232,240,.7);
+}
+.stars { color: #F59E0B; font-size: 1rem; margin-bottom: 12px; }
+.testimonial-text { font-size: .95rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 16px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.author-avatar {
+  width: 44px; height: 44px; border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.author-name  { font-size: .9rem; font-weight: 700; }
+.author-title { font-size: .8rem; color: var(--text-tertiary); }
+
+/* ── CTA FINAL ── */
+.cta-section {
+  background: linear-gradient(135deg, #4F46E5, #7C3AED);
+  padding: 96px 0;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255,255,255,.08) 0%, transparent 60%);
+}
+.cta-section h2 { color: #fff; position: relative; z-index: 1; margin-bottom: 16px; }
+.cta-section p  { color: #C7D2FE; position: relative; z-index: 1; font-size: 1.15rem; margin-bottom: 36px; }
+.cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+.store-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: rgba(255,255,255,.12);
+  border: 1.5px solid rgba(255,255,255,.25);
+  border-radius: 16px; padding: 14px 24px;
+  color: #fff; text-decoration: none;
+  transition: all .2s; font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+.store-btn:hover { background: rgba(255,255,255,.2); transform: translateY(-2px); }
+.store-btn-icon { font-size: 28px; }
+.store-btn-text small { display: block; font-size: .7rem; font-weight: 500; opacity: .7; }
+.store-btn-text strong { font-size: 1rem; }
+
+/* ── FOOTER ── */
+footer {
+  background: #0F172A;
+  padding: 60px 0 32px;
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.footer-logo-icon { width: 36px; height: 36px; border-radius: 9px; background: linear-gradient(135deg, #4F46E5, #7C3AED); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; }
+.footer-logo-text { font-size: 1.1rem; font-weight: 800; color: #fff; }
+.footer-logo-text span { color: #818CF8; }
+.footer-desc { font-size: .9rem; color: #64748b; line-height: 1.65; }
+.footer-col h4 { font-size: .85rem; font-weight: 700; color: #94a3b8; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 16px; }
+.footer-col a  { display: block; font-size: .9rem; color: #64748b; text-decoration: none; margin-bottom: 10px; transition: color .2s; }
+.footer-col a:hover { color: #818CF8; }
+.footer-bottom { border-top: 1px solid #1e293b; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+.footer-copy { font-size: .85rem; color: #475569; }
+
+/* ── SECTION HEADER ── */
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-header p { max-width: 600px; margin: 14px auto 0; font-size: 1.1rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 48px; }
+  .hero-cta  { justify-content: center; }
+  .hero-phone-wrap { display: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .certs-grid    { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.7rem; }
+  .section { padding: 64px 0; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  nav .nav-links a:not(.btn-nav):not(:last-child) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 50 C18 33 28 23 40 23 C46 23 50 26 52 30 L52 67 C50 71 46 73 40 73 C28 73 18 67 18 50Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M82 50 C82 33 72 23 60 23 C60 23 52 30 52 30 L52 67 C52 67 60 73 60 73 C72 73 82 67 82 50Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="50" y1="23" x2="50" y2="73" stroke="white" stroke-width="2.5" stroke-dasharray="4,3"/>
+          <path d="M24 44 Q30 40 34 46 Q38 52 34 58" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <path d="M76 44 Q70 40 67 46 Q63 52 67 58" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <path d="M44 73 Q50 80 56 73" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <span class="nav-logo-text">ABA<span>Genius</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Funciones</a>
+      <a href="#certs">Certificaciones</a>
+      <a href="#how">Cómo funciona</a>
+      <a href="#" class="btn-nav">Descargar gratis</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">
+          🧠 Para candidatos BCBA &amp; BCaBA
+        </div>
+        <h1 class="hero-title">
+          Domina el examen con <span class="accent">inteligencia</span>
+        </h1>
+        <p class="hero-desc">
+          ABAGenius es la app de estudio definitiva para aprobar tu examen BCBA o BCaBA.
+          Banco de preguntas reales, flashcards del Task List y seguimiento de progreso
+          personalizado — todo en tu bolsillo.
+        </p>
+        <div class="hero-cta">
+          <a href="#" class="btn btn-primary btn-lg">
+            📱 Descargar gratis
+          </a>
+          <a href="#features" class="btn btn-outline btn-lg">
+            Ver funciones
+          </a>
+        </div>
+        <div style="margin-top:28px;display:flex;gap:20px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:#64748b;">
+            <span style="color:#F59E0B">★★★★★</span>
+            <span><strong style="color:#1e293b">4.9</strong> / 5 estrellas</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:#64748b;">
+            ✓ <span>Gratis para siempre</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:.9rem;color:#64748b;">
+            ✓ <span>Sin tarjeta de crédito</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Teléfono ilustrativo -->
+      <div class="hero-phone-wrap" style="position:relative;">
+        <div class="hero-phone">
+          <div class="phone-screen">
+            <div class="phone-status">
+              <span>9:41</span>
+              <div class="phone-notch"></div>
+              <span>🔋</span>
+            </div>
+            <div class="phone-body">
+              <div class="phone-header">
+                <div>
+                  <div class="phone-greeting">Hola, María 👋</div>
+                  <div class="phone-sub">Preparación BCBA</div>
+                </div>
+                <span class="phone-badge">BCBA</span>
+              </div>
+              <div class="phone-streak">
+                <div class="phone-streak-fire">🔥</div>
+                <div><div class="phone-streak-val">7</div><div class="phone-streak-lbl">días racha</div></div>
+                <div class="phone-streak-div"></div>
+                <div><div class="phone-streak-val">74%</div><div class="phone-streak-lbl">precisión</div></div>
+              </div>
+              <div style="font-size:10px;font-weight:700;color:#1e293b">Practicar ahora</div>
+              <div class="phone-actions">
+                <div class="phone-action"><div class="phone-action-icon">🎓</div><div class="phone-action-lbl">Quiz</div></div>
+                <div class="phone-action"><div class="phone-action-icon">📚</div><div class="phone-action-lbl">Flashcards</div></div>
+              </div>
+              <div class="phone-stats">
+                <div class="phone-stat"><div class="phone-stat-val">23</div><div class="phone-stat-lbl">Sesiones</div></div>
+                <div class="phone-stat"><div class="phone-stat-val">312</div><div class="phone-stat-lbl">Preguntas</div></div>
+                <div class="phone-stat"><div class="phone-stat-val">82%</div><div class="phone-stat-lbl">Bases</div></div>
+              </div>
+              <div class="phone-domain">
+                <div class="phone-domain-title">Progreso por dominio</div>
+                <div class="phone-domain-row">
+                  <div class="phone-domain-label"><span>Foundations</span><span>82%</span></div>
+                  <div class="phone-track"><div class="phone-fill" style="width:82%;background:#6366f1"></div></div>
+                </div>
+                <div class="phone-domain-row">
+                  <div class="phone-domain-label"><span>Behavior Change</span><span>70%</span></div>
+                  <div class="phone-track"><div class="phone-fill" style="width:70%;background:#10b981"></div></div>
+                </div>
+                <div class="phone-domain-row" style="margin-bottom:0">
+                  <div class="phone-domain-label"><span>Ethics</span><span>58%</span></div>
+                  <div class="phone-track"><div class="phone-fill" style="width:58%;background:#ec4899"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating badges -->
+        <div class="float-badge" style="position:absolute;top:-30px;right:-20px;animation:floatY 3s ease-in-out infinite;">
+          ✅ <span style="color:#065f46;font-weight:700">¡Aprobado!</span>
+        </div>
+        <div class="float-badge" style="position:absolute;bottom:60px;right:-40px;animation:floatY 3s ease-in-out infinite;animation-delay:.7s;">
+          🔥 <span>7 días seguidos</span>
+        </div>
+        <div class="float-badge" style="position:absolute;top:180px;left:-50px;animation:floatY 3s ease-in-out infinite;animation-delay:1.4s;">
+          🧠 <span>Task A-01 dominado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div>
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Preguntas de práctica</div>
+      </div>
+      <div>
+        <div class="stat-number">7</div>
+        <div class="stat-label">Dominios del Task List</div>
+      </div>
+      <div>
+        <div class="stat-number">2</div>
+        <div class="stat-label">Certificaciones cubiertas</div>
+      </div>
+      <div>
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Gratis para siempre</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <span class="pill pill-primary">Funcionalidades</span>
+      <h2 style="margin-top:14px">Todo lo que necesitas para aprobar</h2>
+      <p>Diseñado siguiendo el Task List oficial del BACB 6th Edition para BCBA y BCaBA.</p>
+    </div>
+    <div class="features-grid">
+
+      <div class="feature-card" style="--card-accent:#4F46E5">
+        <div class="feature-icon" style="background:#EEF2FF">🎯</div>
+        <div class="feature-title">Banco de preguntas</div>
+        <p class="feature-desc">Más de 500 preguntas de práctica organizadas por dominio y código de tarea, con explicaciones detalladas para cada respuesta.</p>
+      </div>
+
+      <div class="feature-card" style="--card-accent:#10B981">
+        <div class="feature-icon" style="background:#D1FAE5">🃏</div>
+        <div class="feature-title">Flashcards interactivas</div>
+        <p class="feature-desc">Tarjetas de estudio con flip animation para todos los términos y conceptos del Task List. Marca lo que sabes y lo que necesitas repasar.</p>
+      </div>
+
+      <div class="feature-card" style="--card-accent:#7C3AED">
+        <div class="feature-icon" style="background:#F5F3FF">📊</div>
+        <div class="feature-title">Dashboard de progreso</div>
+        <p class="feature-desc">Visualiza tu avance por dominio, mantén tu racha de estudio y monitorea tu precisión general en tiempo real.</p>
+      </div>
+
+      <div class="feature-card" style="--card-accent:#F59E0B">
+        <div class="feature-icon" style="background:#FEF3C7">🔥</div>
+        <div class="feature-title">Racha de estudio</div>
+        <p class="feature-desc">Gamificación que te mantiene motivado. Construye tu racha diaria y rompe tus propios récords de estudio.</p>
+      </div>
+
+      <div class="feature-card" style="--card-accent:#0EA5E9">
+        <div class="feature-icon" style="background:#E0F2FE">🧩</div>
+        <div class="feature-title">Modo BCBA y BCaBA</div>
+        <p class="feature-desc">Contenido específico para cada nivel de certificación. Alterna entre BCBA y BCaBA según tus objetivos profesionales.</p>
+      </div>
+
+      <div class="feature-card" style="--card-accent:#EC4899">
+        <div class="feature-icon" style="background:#FCE7F3">📱</div>
+        <div class="feature-title">Mobile-first</div>
+        <p class="feature-desc">Diseñada para estudiar en cualquier lugar. Interfaz fluida y nativa en iOS y Android, con soporte web próximamente.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CERTIFICACIONES ── -->
+<section class="section certs-section" id="certs">
+  <div class="container">
+    <div class="section-header">
+      <span class="pill pill-purple">Certificaciones</span>
+      <h2 style="margin-top:14px">BCBA y BCaBA — sin dejar a nadie fuera</h2>
+      <p>Cobertura completa del Task List del BACB para ambas certificaciones.</p>
+    </div>
+    <div class="certs-grid">
+
+      <div class="cert-card">
+        <div class="cert-badge cert-badge-bcba">BC</div>
+        <div class="cert-title">BCBA</div>
+        <div class="cert-full">Board Certified Behavior Analyst</div>
+        <ul class="cert-features">
+          <li>Todos los dominios del Task List 6th Ed.</li>
+          <li>Preguntas de dificultad graduada: fácil, media y difícil</li>
+          <li>Secciones específicas por código de tarea (A-01, B-04, etc.)</li>
+          <li>Explicaciones basadas en Cooper, Heron &amp; Heward</li>
+          <li>Simulacros de examen cronometrados</li>
+        </ul>
+        <span class="pill pill-primary">Disponible ahora</span>
+      </div>
+
+      <div class="cert-card">
+        <div class="cert-badge cert-badge-bcaba">BC</div>
+        <div class="cert-title">BCaBA</div>
+        <div class="cert-full">Board Certified Assistant Behavior Analyst</div>
+        <ul class="cert-features">
+          <li>Contenido adaptado al nivel de asistente</li>
+          <li>Énfasis en implementación bajo supervisión</li>
+          <li>Preguntas sobre roles y responsabilidades BCaBA</li>
+          <li>Conceptos éticos del BACB Ethics Code 2020</li>
+          <li>Preparación completa sin necesidad de docente</li>
+        </ul>
+        <span class="pill pill-purple">Disponible ahora</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CÓMO FUNCIONA ── -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-header">
+      <span class="pill pill-green">Proceso</span>
+      <h2 style="margin-top:14px">Empieza a estudiar en 3 pasos</h2>
+      <p>Sin configuración complicada. Descarga y empieza en minutos.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Crea tu cuenta gratuita</h3>
+          <p>Regístrate con tu correo y elige tu certificación objetivo: BCBA o BCaBA. Tu progreso se guarda automáticamente en la nube.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Elige cómo estudiar</h3>
+          <p>Toma un quiz rápido de 10 preguntas o repasa conceptos con flashcards. Filtra por dominio (Foundations, Ethics, Measurement, etc.) para atacar tus puntos débiles.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Monitorea tu progreso</h3>
+          <p>Desde el dashboard ve tu precisión por dominio, mantén tu racha de estudio y sabe exactamente en qué áreas concentrarte antes del examen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="section testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="pill pill-primary">Testimonios</span>
+      <h2 style="margin-top:14px">Estudiantes que ya lo están usando</h2>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Pasé mi examen BCBA al primer intento. Los quizzes están increíblemente bien organizados por dominio y las explicaciones son muy claras."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#4F46E5,#7C3AED)">A</div>
+          <div>
+            <div class="author-name">Andrea M.</div>
+            <div class="author-title">BCBA — Miami, FL</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Como supervisor de RBTS necesitaba refrescar conceptos para mi renovación BCaBA. ABAGenius me ayudó a estudiar 20 min al día sin estrés."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#0EA5E9,#6366F1)">C</div>
+          <div>
+            <div class="author-name">Carlos R.</div>
+            <div class="author-title">BCaBA — Houston, TX</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-text">"Las flashcards del Task List son geniales. Antes usaba papel, ahora las tengo en el teléfono y estudio hasta en el metro."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background:linear-gradient(135deg,#10B981,#0EA5E9)">L</div>
+          <div>
+            <div class="author-name">Laura V.</div>
+            <div class="author-title">BCBA Candidata — Chicago, IL</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ── -->
+<section class="cta-section" id="download">
+  <div class="container">
+    <h2>¿Listo para aprobar tu examen?</h2>
+    <p>Únete a cientos de candidatos que ya estudian con ABAGenius. Gratis para siempre.</p>
+    <div class="cta-buttons">
+      <a href="#" class="store-btn">
+        <span class="store-btn-icon">🍎</span>
+        <div class="store-btn-text">
+          <small>Descargar en</small>
+          <strong>App Store</strong>
+        </div>
+      </a>
+      <a href="#" class="store-btn">
+        <span class="store-btn-icon">🤖</span>
+        <div class="store-btn-text">
+          <small>Disponible en</small>
+          <strong>Google Play</strong>
+        </div>
+      </a>
+    </div>
+    <p style="margin-top:20px;font-size:.85rem;opacity:.6">iOS &amp; Android · Próximamente en Web</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="footer-logo-icon">🧠</div>
+          <span class="footer-logo-text">ABA<span>Genius</span></span>
+        </div>
+        <p class="footer-desc">La app de preparación para candidatos al BCBA y BCaBA. Estudio inteligente, resultados reales.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Producto</h4>
+        <a href="#features">Funciones</a>
+        <a href="#certs">Certificaciones</a>
+        <a href="#how">Cómo funciona</a>
+        <a href="#download">Descargar</a>
+      </div>
+      <div class="footer-col">
+        <h4>Certificaciones</h4>
+        <a href="#">BCBA</a>
+        <a href="#">BCaBA</a>
+        <a href="#">Task List 6th Ed.</a>
+        <a href="#">BACB Ethics Code</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacidad</a>
+        <a href="#">Términos de uso</a>
+        <a href="#">Contacto</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 ABAGenius. Todos los derechos reservados.</p>
+      <p class="footer-copy">ABAGenius no está afiliado con el BACB.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar shadow on scroll
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.boxShadow =
+    window.scrollY > 10 ? '0 4px 20px rgba(0,0,0,.08)' : 'none';
+});
+
+// Animación de entrada de elementos
+const observer = new IntersectionObserver(
+  (entries) => entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  }),
+  { threshold: 0.1 }
+);
+
+document.querySelectorAll('.feature-card, .cert-card, .step, .testimonial-card, .stat-number').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
