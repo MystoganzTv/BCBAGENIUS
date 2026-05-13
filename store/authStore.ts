@@ -32,7 +32,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     if (session?.user) {
       const { data: profile } = await supabase
         .from('profiles')
-        .select('*')
+        .select('id, email, full_name, cert_target, avatar_url, created_at')
         .eq('id', session.user.id)
         .single();
 
@@ -44,15 +44,21 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     // Evita acumular listeners si esta accion se invoca mas de una vez.
     authSubscription?.unsubscribe();
 
-    // Escuchar cambios de sesión en tiempo real
-    const { data } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    // Solo re-fetchea el profile cuando el usuario realmente cambia (no en TOKEN_REFRESHED).
+    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
+      const currentUserId = get().user?.id;
+
       if (session?.user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        set({ user: session.user, session, profile });
+        if (event === 'SIGNED_IN' && session.user.id !== currentUserId) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('id, email, full_name, cert_target, avatar_url, created_at')
+            .eq('id', session.user.id)
+            .single();
+          set({ user: session.user, session, profile });
+        } else {
+          set({ user: session.user, session });
+        }
       } else {
         set({ user: null, session: null, profile: null });
       }
